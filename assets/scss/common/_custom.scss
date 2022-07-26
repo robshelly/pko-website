@@ -1,0 +1,16 @@
+/** Custom styles */
+
+div.package-operator-logo {
+  max-width: 500px;
+  margin: 0 auto;
+
+  &::before {
+    content: url(/package-operator.svg);
+  }
+}
+
+[data-dark-mode] div.package-operator-logo {
+  &::before {
+    content: url(/package-operator-dark.svg);
+  }
+}
