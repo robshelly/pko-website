@@ -1,4 +1,4 @@
-baseurl = "https://package-operator.github.io/"
+baseurl = "https://package-operator.run/"
 canonifyURLs = false
 disableAliases = true
 disableHugoGeneratorInject = true
