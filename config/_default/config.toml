@@ -67,6 +67,9 @@ rel  = "sitemap"
 
 [minify.tdewolff.html]
   keepWhitespace = false
+  # required for go-imports to work till
+  # https://github.com/golang/go/issues/39748 is fixed
+  keepQuotes = true
 
 [related]
   threshold = 80
