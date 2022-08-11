@@ -8,7 +8,7 @@ Based on Ascetic by (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
   display: block;
   overflow-x: auto;
   padding: 1.25rem 1.5rem;
-  background: $beige;
+  background: #f7fafd;
   color: $body-color;
 }
 
@@ -21,7 +21,7 @@ Based on Ascetic by (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
 .hljs-addition,
 .hljs-attribute,
 .hljs-link {
-  color: $pink-500;
+  color: $blue-dark;
 }
 
 .hljs-comment,
@@ -58,5 +58,5 @@ Based on Ascetic by (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
 [data-dark-mode] body .hljs-addition,
 [data-dark-mode] body .hljs-attribute,
 [data-dark-mode] body .hljs-link {
-  color: $blue-300;
+  color: $blue-light;
 }

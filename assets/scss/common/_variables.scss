@@ -17,6 +17,8 @@ $black: #1d2d35;
 $beige: #fbf7f0;
 
 $blue: #005ddd;
+$blue-light: lighten($blue, 30%);
+$blue-dark: darken($blue, 10%);
 // $red:      #e55235;
 $purple: #5d2f86;
 $brown: #aa9c84;
@@ -27,8 +29,8 @@ $pink-500: #d32e9d;
 
 $primary: $blue;
 
-$color-btn-bg: $pink-500;
-$color-btn-border: darken($pink-500, 5%);
+$color-btn-bg: $blue;
+$color-btn-border: darken($blue, 5%);
 $color-btn-text: $white;
 
 // Options
