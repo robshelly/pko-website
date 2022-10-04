@@ -1,0 +1,10 @@
+{{$cols := split .Inner "<--->"}}
+  {{$colNum := len $cols}}
+  {{$col := math.Round (div 16 $colNum)}}
+  <div class="row">
+    {{ range $cols }}
+    <div class="col-md-{{$col}}">
+      {{ . | $.Page.RenderString }}
+    </div>
+    {{ end }}
+  </div>
