@@ -14,7 +14,7 @@ Make sure `KUBECONFIG` is defined and the config points at your Kubernetes clust
 Then you can deploy Package Operator to bootstrap itself:
 
 ```
-kubectl create -f https://github.com/package-operator/package-operator/releases/download/latest/self-bootstrap-job.yaml
+kubectl create -f https://github.com/package-operator/package-operator/releases/latest/download/self-bootstrap-job.yaml
 ```
 This will not install the webhook server.
 
