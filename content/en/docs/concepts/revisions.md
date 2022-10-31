@@ -43,7 +43,7 @@ direction LR
 ```
 
 - **Pending**  
-  Intermediate state before the controller posted it's first update.
+  Intermediate state before the controller posted its first update.
 - **Available**  
   All availability probes are successful.
 - **Not Ready**  
@@ -51,7 +51,7 @@ direction LR
 - **Archived**  
   (Cluster)ObjectSet is shutdown and only acts as a revision tombstone for rollbacks.
 
-Additionally to these major lifecycle states, (Cluster)ObjectSets may be **Paused**, stopping reconciliation, while still reporting status.
+In addition to these major lifecycle states, (Cluster)ObjectSets may be **Paused**, stopping reconciliation, while still reporting status.
 This can be useful for testing and debugging.
 
 ## Rollout Handling
@@ -76,7 +76,7 @@ flowchart LR
   deploy1--patched object-->deploy2
 ```
 
-"In-Place" updates happen when a new revision contains an object with the same type and name as the previous revision.
+"In-Place" updates happen when a new revision contains an object with the same name and type as the previous revision.
 Objects are handed over to a new revision and patched as needed.
 
 When all objects have been handed over to a new revision, the previous revision is automatically **archived**.
@@ -96,7 +96,7 @@ flowchart LR
   deploy1-. indirect successor .->deploy2
 ```
 
-A/B updates happen when a new revision does not contain an object with the same type and name as a previous revision.
+A/B updates happen when a new revision does not contain an object with the same name and type as a previous revision.
 A new object is created in the new revision without affecting the old object.
 
 The old revision is only archived when the new revision has completely finished its rollout and is "Available".
@@ -124,11 +124,11 @@ flowchart LR
   cm2-.->cm3
 ```
 
-Under normal circumstances at max 2 Revisions might be active during rollout. An old and a new revision.
+Under normal circumstances at max 2 Revisions can be active during rollout. An old and a new revision.
 
 If a revision fails to become available due to e.g. misconfiguration and a new revision supersedes it, multiple intermediate revisions might be active until the latest revision becomes available.
 
-Intermediate revisions will only be Cleaned up if:
+Intermediate revisions will only be cleaned up if:
 - Latest revision becomes available
 - Revision is not reconciling any objects anymore
 - Latest revision is not containing any object still actively reconciled by an intermediate
@@ -137,7 +137,7 @@ Intermediate revisions will only be Cleaned up if:
 
 In the example above, the ConfigMap "my-config" is handed over from revision 1 to revision 2 and in the end to revision 3.
 
-As soon as revision 3 takes ownership of the ConfigMap, the failed intermediate revision 2 can be archived, as "my-deployment-v2" no longer exists in revision 3 and is thus save to delete.
+As soon as revision 3 takes ownership of the ConfigMap, the failed intermediate revision 2 can be archived, as "my-deployment-v2" no longer exists in revision 3 and is thus safe to delete.
 
 ## Internals
 

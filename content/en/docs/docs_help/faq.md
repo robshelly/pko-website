@@ -4,9 +4,6 @@ description: "Answers to frequently asked questions."
 lead: "Answers to frequently asked questions."
 draft: false
 images: []
-menu:
-  docs:
-    parent: "help"
 weight: 630
 toc: true
 ---

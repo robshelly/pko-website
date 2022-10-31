@@ -29,11 +29,11 @@ Helping users in installing and maintaining complex software on one or multiple 
 
 ### Security
 
-A Kubernetes package manager is entrusted with a very high level of permissions on one or multiple clusters and also works with secrets as part of package configuration. Without putting security of these credentials first, users will not be able to trust Package Operator.
+A Kubernetes package manager is entrusted with a very high level of permissions on one or more clusters and also works with secrets as part of package configuration. Without putting security of these credentials first, users will not be able to trust Package Operator.
 
 ### Stability
 
-Stability enables any other feature in the Package Operator and makes or breaks it's whole value proposition. Because many day-2 operations, like patching, updating and re-configuration can be orchestrated via Package Operator, a miss-behaving or broken Package Operator can spell doom to any production environment.
+Stability enables any other feature in the Package Operator and makes or breaks its whole value proposition. Because many day-2 operations, like patching, updating and re-configuration can be orchestrated via Package Operator, a misbehaving or broken Package Operator can spell doom to any production environment.
 
 Package Operator commits to stability and extensive automated testing for any feature being implemented.
 

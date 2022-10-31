@@ -9,7 +9,7 @@ toc: true
 Package Operator is watching and if needed reconciling all objects under management.  
 This page describes in detail how individual objects are updated.
 
-Order across multiple objects is described on the [Phases page](/docs/concepts/phases).  
+Ordering of multiple objects is described on the [Phases page](/docs/concepts/phases).
 How object status is interpreted is described further on the [Probes page](/docs/concepts/probes).
 
 Object update rules:

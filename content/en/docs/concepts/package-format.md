@@ -6,11 +6,11 @@ weight: 800
 toc: true
 ---
 
-Package Operator packages allow to distribute all manifests that make up an application or operator deployment into a single artifact.
+Package Operator packages allow distributing all manifests that make up an application or operator deployment into a single artifact.
 
-This artifact is just an empty container image containing a `PackageManifest` and the Kubernetes manifests in an optionally nested nested folder structure.
+This artifact is just an empty container image containing a `PackageManifest` and the Kubernetes manifests in an optionally nested folder structure.
 
-The `Package` API is used to load these package container images into the cluster. This loading process will load the image contents into an `ObjectDeployment`.
+The `Package` or the `ClusterPackage` API is used to load these package container images into the cluster. This loading process will load the image contents into an `ObjectDeployment`.
 
 {{< alert text="Large Packages will automatically use the `ObjectSlice` API to get around etcd object-size limitations.<br>More about this feature can be found on the \"Big Packages\" page." />}}
 
@@ -53,17 +53,20 @@ catalog:
   version: 0.2.4
   iconFile: my-icon.png # relative file location within package
   keywords:
-  - cool
+    - cool
   provider:
     name: Example Corp
     url: example.com
   links:
-  - name: Source Code
-    url: https://example.com/example-corp/cool-package
+    - name: Source Code
+      url: https://example.com/example-corp/cool-package
   maintainers:
-  - email: cool-package-people@example.com
-    name: Cool package maintainers
+    - email: cool-package-people@example.com
+      name: Cool package maintainers
 spec:
+  scopes:
+  - Cluster
+  - Namespaced
   phases:
   - name: phase-1
   - name: phase-2
