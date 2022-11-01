@@ -8,7 +8,7 @@ toc: false
 
 The Package Operator APIs are an extension of the [Kubernetes API](https://kubernetes.io/docs/reference/using-api/api-overview/) using `CustomResourceDefinitions`. These new APIs can be interacted with like any other Kubernetes object using e.g. `kubectl`.
 
-APIs follows the same API versioning guidelines as the main Kubernetes project.
+APIs follow the same API versioning guidelines as the main Kubernetes project.
 
 {{< details "Versioning principles." >}}
 _Taken from the [Kubernetes API versioning documentation](https://kubernetes.io/docs/reference/using-api/#api-versioning):_
@@ -31,6 +31,10 @@ _Taken from the [Kubernetes API versioning documentation](https://kubernetes.io/
   - The version name is `vX` where `X` is an integer.
   - The stable versions of features appear in released software for many subsequent versions.
 {{< /details >}}
+
+### Group versions
+- [package-operator.run/v1alpha1](#package-operatorrunv1alpha1)  
+- [manifests.package-operator.run/v1alpha1](#manifestspackage-operatorrunv1alpha1)
 
 ## package-operator.run/v1alpha1
 
