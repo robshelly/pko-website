@@ -32,7 +32,6 @@ apiVersion: package-operator.run/v1alpha1
 kind: ClusterPackage
 metadata:
   name: example
-  namespace: default
 spec:
   image: packageImage
 
