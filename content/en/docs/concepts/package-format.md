@@ -47,22 +47,6 @@ Well-Known Annotations are used to control the loading behavior of an object wit
 ```yaml
 apiVersion: manifests.package-operator.run/v1alpha1
 kind: PackageManifest
-catalog:
-  displayName: Cool Package
-  shortDescription: xxx xxx xxx
-  version: 0.2.4
-  iconFile: my-icon.png # relative file location within package
-  keywords:
-    - cool
-  provider:
-    name: Example Corp
-    url: example.com
-  links:
-    - name: Source Code
-      url: https://example.com/example-corp/cool-package
-  maintainers:
-    - email: cool-package-people@example.com
-      name: Cool package maintainers
 spec:
   scopes:
   - Cluster
@@ -83,6 +67,7 @@ spec:
       kind:
         group: apps
         kind: Deployment
+test: {}
 ```
 
 ### Containerfile
