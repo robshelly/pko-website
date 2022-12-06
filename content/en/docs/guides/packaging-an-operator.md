@@ -3,37 +3,60 @@ title: Packaging an Operator
 weight: 300
 images: []
 ---
-## Objectives
-* Create a manifest.yaml file
-* Add annotations to Kubernetes object manifest files to specify phase
-* Package all files in a Containerfile
-* Build the image
 
-## Before you begin
-This guide assumes you have all the [required software](/docs/getting_started/requirements) installed and have a
-Kubernetes cluster with [Package Operator installed](/docs/getting_started/installation).
+This guide extends on [Packaging an Application](/docs/guides/packaging-an-application/), with the goal to package and deploy an Kubernetes Operator using the Package Operator - [ClusterPackage API](/docs/getting_started/api-reference/#clusterpackage).
 
+During this guide you will:
+* Create a `manifest.yaml` file
+* Use multiple PKO phases
+* Build and Validate the Package Operator package
 
-Usually a Kubernetes operator will consist of CRDs and the operator deployment. Because the operator watches the
-CRDs, the CRDs have to be deployed before the operator deployment. This order of deployment can be specified via
-`phases` in the `manifest.yaml`
+To complete this guide you will need:
+* A Kubernetes cluster with Package Operator installed
+* The `kubectl-package` CLI plugin
+* A container-registry to push images to  
+(optional when using tars and kind load)
 
-## Package Manifest
-The package manifest file is described in detail on the [Package Format page](/docs/concepts/package-format). For
-a simple operator the file would most likely look like this:
+All files used during this guide are available in the [package-operator/examples](https://github.com/package-operator/examples) repository.
 
-###### manifest.yaml
+## 1. Start
+
+_Please refer to the files in `/2_operators/1_start` for this step._
+
+### Writing a PackageManifest
+
+Operators are always installed for the whole cluster, so the package is also scoped for the cluster.
+
 ```yaml
-apiVersion: manifests.package-operator.run/v1alpha1
-kind: PackageManifest
-metadata:
-  name: operator-package
 spec:
   scopes:
   - Cluster
+```
+
+---
+
+Operators require distinct order-of-operations to successfully install.  
+The phases list represents these steps.
+
+- `CustomResourceDefinitions` have no pre-requisites, so they come first.
+- `Namespaces` also has no dependencies.
+- `ServiceAccount` and `RoleBinding` need the `Namespace`
+- `Deployment` needs all of the above.
+
+```yaml
+spec:
   phases:
   - name: crds
+  - name: namespace
+  - name: rbac
   - name: deploy
+```
+
+Probes define how Package Operator interrogates objects under management for status.  
+For this operator we want to add a new probe to ensure the CRDs have been established.
+
+```yaml
+spec:
   availabilityProbes:
   - probes:
     - condition:
@@ -46,61 +69,88 @@ spec:
       kind:
         group: apps
         kind: Deployment
-```
-A short discussion about the different fields in `.spec`.
-### Scopes
-Since the package contains CRDs, which are cluster scoped, the only possible scope for the
-package is `Cluster`. You can read more about scopes on the [Scopes page](/docs/concepts/scopes).
-
-### Phases
-The CRDs must be created before the deployment. Therefore, the Package Manifest file has two phases,
-`crds` and `deploy`, in that order.
-
-Read more about phases on the [Phases page](/docs/concepts/phases).
-
-### Availability Probes
-This is a standard probe for deployment resources. You can read more about availability probes
-on the [Probes page](/docs/concepts/probes).
-
-## Annotations
-
-Now we have to link each object to a phase. This is done by adding a `package-operator.run/phase` annotation to the object.
-We would now add a `package-operator.run/phase: crds` annotation to all CRD object manifests, and a
-`package-operator.run/phase: depoy` annotation to the operator deployment manifest.
-
-
-
-## Package Image
-Package Operator receives these files via a non-runnable container image. The files have to be contained in the
-`/package` directory in the image. That means, your container file could be as simple as
-
-###### package.Containerfile
-```dockerfile
-FROM scratch
-
-ADD . /package
+  - probes:
+    - condition:
+        type: Established
+        status: "True"
+    selector:
+      kind:
+        group: apiextensions.k8s.io
+        kind: CustomResourceDefinition
 ```
 
-During the loading of the package, Package Operator will recursively go through all folders, therefore we could have
-a file structure like this:
-```
-package
-│   manifest.yaml
-│
-└───crds
-│   │   crd1.yaml
-│   │   crd2.yaml
-│   │   ...
-│
-└───deployment
-    │   deployment.yaml
+### Assigning objects to phases
+
+Package Operators needs to know in which phase objects belong.  
+To assign an object to a phase, simply add an annotation:
+
+```yaml
+metadata:
+  annotations:
+    package-operator.run/phase: crds|namespace|rbac|deploy
 ```
 
-#### Build the Image
-This package image can be built with whichever tool you use for building images, for example:
-```shell
-podman build -t packageImage -f package.Containerfile .
+### Build & Validate
+To inspect the parsed hierarchy of your package, use:
+```sh
+$ kubectl package tree --cluster 2_operators/1_start 
+
+# example:
+example-operator
+ClusterPackage /name
+└── Phase crds
+│   ├── apiextensions.k8s.io/v1, Kind=CustomResourceDefinition /nginxes.example.thetechnick.ninja
+└── Phase namespace
+│   ├── /v1, Kind=Namespace /example-operator
+└── Phase rbac
+│   ├── /v1, Kind=ServiceAccount example-operator/example-operator
+│   ├── rbac.authorization.k8s.io/v1, Kind=Role example-operator/example-operator
+│   ├── rbac.authorization.k8s.io/v1, Kind=RoleBinding example-operator/example-operator
+│   ├── rbac.authorization.k8s.io/v1, Kind=ClusterRole /example-operator
+│   ├── rbac.authorization.k8s.io/v1, Kind=ClusterRoleBinding /example-operator
+└── Phase deploy
+    └── apps/v1, Kind=Deployment example-operator/example-operator
+```
+---
+And finally to build your package as a container image use:
+```sh
+# -o will directly output a `podman/docker load` compatible tar.gz of your container image.
+# Use this flag if you don't want to push images to a container registry.
+$ kubectl package build -t <your-image-url-goes-here> -o example-operator.tar.gz 2_operators/1_start
+# example: load image into kind nodes:
+$ kind load image-archive example-operator.tar.gz
+
+# Alternatively push images directly to a registry.
+# Assumes you are already logged into a registry via `podman/docker login`
+$ kubectl package build -t <your-image-url-goes-here> --push 2_operators/1_start
 ```
 
-## Next Steps
-See the [Installing Packages page](/docs/guides/installing-packages) to see how to deploy packages using Package Operator.
+### Deploy
+
+Now that you have build your first Package Operator package, we can deploy it!  
+You will find the `Package`-object template in the examples checkout under 2_operators/clusterpackage.yaml.
+
+```yaml
+apiVersion: package-operator.run/v1alpha1
+kind: ClusterPackage
+metadata:
+  name: example-operator
+spec:
+  image: <your-image-url-goes-here>
+```
+
+```sh
+$ kubectl create -f 2_operators/clusterpackage.yaml
+clusterpackage.package-operator.run/example-operator created
+
+# wait for package to be loaded and installed:
+$ kubectl get clusterpackage -w
+NAME               STATUS        AGE
+example-operator   Progressing   10s
+example-operator   Available     22s
+
+# success!
+$ kubectl get po -n example-operator
+NAME                                READY   STATUS    RESTARTS   AGE
+example-operator-5d86f95b4f-z4wfz   1/1     Running   0          17m
+```
