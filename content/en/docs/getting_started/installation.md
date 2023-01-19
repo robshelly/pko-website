@@ -33,3 +33,19 @@ Package Operator. Therefore, Package Operator can be installed with the single c
 https://raw.githubusercontent.com/package-operator/package-operator/main/install.yaml
 ```
 This will not install the webhook server.
+
+## kubectl package plugin
+A [kubectl plugin](https://kubernetes.io/docs/tasks/extend-kubectl/kubectl-plugins/) named `package` is released alongside
+Package Operator itself to make the interaction easier.
+
+Follow these simple steps to install it:
+
+1. download the `kubectl-package_*` file for local architecture from the
+[releases page](https://github.com/package-operator/package-operator/releases)
+2. rename it to `kubectl-package`
+3. make it executable (e.g. `chmod +x kubectl-package` on Linux)
+4. move it to anywhere on your `PATH`
+
+This will allow you to issue `kubectl package ...` commands
+
+For a more detailed explanation on how to install plugins, check the [official documentation](https://kubernetes.io/docs/tasks/extend-kubectl/kubectl-plugins/#installing-kubectl-plugins)
