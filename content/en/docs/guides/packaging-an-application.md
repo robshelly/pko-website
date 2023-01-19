@@ -132,6 +132,12 @@ $ kind load image-archive nginx.tar.gz
 $ kubectl package build -t <your-image-url-goes-here> --push 1_applications/1_start
 ```
 
+#### Warning on image tag
+
+If you load the image to a local registry (e.g. with `minikube image load` or `kind load`),
+specify a tag **different than `latest`** (e.g. `test` or `v1`), otherwise Package Operator
+won't be able to load it.
+
 ### Deploy
 
 Now that you have build your first Package Operator package, we can deploy it!  
