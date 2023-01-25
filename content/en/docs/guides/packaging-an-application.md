@@ -123,6 +123,7 @@ And finally to build your package as a container image use:
 ```sh
 # -o will directly output a `podman/docker load` compatible tar.gz of your container image.
 # Use this flag if you don't want to push images to a container registry.
+# To give a demonstration, you can use nginx:local as your image url here.
 $ kubectl package build -t <your-image-url-goes-here> -o nginx.tar.gz 1_applications/1_start
 # example: load image into kind nodes:
 $ kind load image-archive nginx.tar.gz
@@ -137,7 +138,8 @@ $ kubectl package build -t <your-image-url-goes-here> --push 1_applications/1_st
 ### Deploy
 
 Now that you have build your first Package Operator package, we can deploy it!  
-You will find the `Package`-object template in the examples checkout under 1_applications/package.yaml.
+You will find the `Package`-object template in the examples checkout under 1_applications/package.yaml.  
+Don't forget to change the image url so it corresponds to the one used when building the package.
 
 ```yaml
 apiVersion: package-operator.run/v1alpha1
