@@ -6,21 +6,30 @@ weight: 900
 toc: true
 ---
 
-The most straightforward way of using the Package Operator APIs `ObjectDeployment` and `ObjectSet` is to define objects inline directly when creating an instance of these APIs.
+The most straightforward way of using the Package Operator APIs `ObjectDeployment`
+and `ObjectSet` is to define objects inline directly when creating an instance of
+these APIs.
 
-etcd - the default Kubernetes database - has an object size limit of 1 MiB ([etcd <=v3.2](https://etcd.io/docs/v3.2/dev-guide/limit/)) or 1.5 MiB ([etcd >v3.2](https://etcd.io/docs/v3.3/dev-guide/limit/)).
+etcd - the default Kubernetes database - has an object size limit of 1 MiB
+([etcd <=v3.2](https://etcd.io/docs/v3.2/dev-guide/limit/)) or 1.5 MiB ([etcd >v3.2](https://etcd.io/docs/v3.3/dev-guide/limit/)).
 
-Building packages containing multiple large objects, like CustomResourceDefinitions, or just contain a large number of objects, might run into these limits, when defining objects inline.
+Building packages containing multiple large objects, like CustomResourceDefinitions,
+or just contain a large number of objects, might run into these limits, when defining
+objects inline.
 
 ## Slices API
 
-To get around this limitation, Package Operator allows offloading big objects into an auxiliary API `ObjectSlice`. Instead of all objects being defined inline in the parent `ObjectDeployment` or `ObjectSet` one or multiple `ObjectSlice`s can be specified.
+To get around this limitation, Package Operator allows offloading big objects into
+an auxiliary API `ObjectSlice`. Instead of all objects being defined inline in the
+parent `ObjectDeployment` or `ObjectSet` one or multiple `ObjectSlice`s can be specified.
 
 In contrast to `ObjectDeployment`s, `ObjectSlice`s are immutable.\
-When updating an `ObjectDeployment` a new `ObjectSlice` needs to be created, which contains the desired changes.
-Only when referencing this new slice instead of the current slice from the ObjectDeployment, will the change be applied.
+When updating an `ObjectDeployment` a new `ObjectSlice` needs to be created, which
+contains the desired changes. Only when referencing this new slice instead of the
+current slice from the ObjectDeployment, will the change be applied.
 
-{{< alert text="When using the `Package` API, Package Operator will automatically split packages that reach a certain limit by using the `ObjectSlice` API." />}}
+{{< alert text=`When using the 'Package' API, Package Operator will automatically
+split packages that reach a certain limit by using the 'ObjectSlice' API.` />}}
 
 ## Example
 

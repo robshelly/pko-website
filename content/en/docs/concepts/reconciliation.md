@@ -23,7 +23,9 @@ Object update rules:
 
 ### Annotations/Labels
 
-Annotations and Labels defined by users or other controllers and integrations are not overridden or replaced. Only labels and annotations explicitly set are reconciled to the specified value.
+Annotations and Labels defined by users or other controllers and integrations are
+not overridden or replaced. Only labels and annotations explicitly set are reconciled
+to the specified value.
 
 This is important, as Kubernetes operators may use labels to scope their caches.
 It also allows humans to add extra labels and annotations for ops or debugging work.
@@ -75,7 +77,8 @@ spec: {}
 
 ### Replicas
 
-Fields not explicitly specified, may be defaulted or changed, without being reset by the Package Operator.
+Fields not explicitly specified, may be defaulted or changed, without being reset
+by the Package Operator.
 
 {{< columns >}}
 **Desired Object in Package Operator**

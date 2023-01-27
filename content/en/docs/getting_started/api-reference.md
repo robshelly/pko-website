@@ -6,7 +6,10 @@ weight: 700
 toc: false
 ---
 
-The Package Operator APIs are an extension of the [Kubernetes API](https://kubernetes.io/docs/reference/using-api/api-overview/) using `CustomResourceDefinitions`. These new APIs can be interacted with like any other Kubernetes object using e.g. `kubectl`.
+The Package Operator APIs are an extension of the
+[Kubernetes API](https://kubernetes.io/docs/reference/using-api/api-overview/)
+using `CustomResourceDefinitions`. These new APIs can be interacted with like any
+other Kubernetes object using e.g. `kubectl`.
 
 APIs follow the same API versioning guidelines as the main Kubernetes project.
 
@@ -15,21 +18,31 @@ _Taken from the [Kubernetes API versioning documentation](https://kubernetes.io/
 
 - **Alpha**
   - The version names contain alpha (for example, `v1alpha1`).
-  - The software may contain bugs. Enabling a feature may expose bugs. A feature may be disabled by default.
+  - The software may contain bugs. Enabling a feature may expose bugs. A feature
+    may be disabled by default.
   - The support for a feature may be dropped at any time without notice.
   - The API may change in incompatible ways in a later software release without notice.
-  - The software is recommended for use only in short-lived testing clusters, due to increased risk of bugs and lack of long-term support.
+  - The software is recommended for use only in short-lived testing clusters,
+    due to increased risk of bugs and lack of long-term support.
 
 - **Beta**
   - The version names contain beta (for example, `v2beta3`).
-  - The software is well tested. Enabling a feature is considered safe. Features are enabled by default.
+  - The software is well tested. Enabling a feature is considered safe. Features
+    are enabled by default.
   - The support for a feature will not be dropped, though the details may change.
-  - The schema and/or semantics of objects may change in incompatible ways in a subsequent beta or stable release. When this happens, migration instructions are provided. Schema changes may require deleting, editing, and re-creating API objects. The editing process may not be straightforward. The migration may require downtime for applications that rely on the feature.
-  - The software is not recommended for production uses. Subsequent releases may introduce incompatible changes. If you have multiple clusters which can be upgraded independently, you may be able to relax this restriction.
+  - The schema and/or semantics of objects may change in incompatible ways in a
+    subsequent beta or stable release. When this happens, migration instructions
+    are provided. Schema changes may require deleting, editing, and re-creating
+    API objects. The editing process may not be straightforward. The migration
+    may require downtime for applications that rely on the feature.
+  - The software is not recommended for production uses. Subsequent releases may
+    introduce incompatible changes. If you have multiple clusters which can be
+    upgraded independently, you may be able to relax this restriction.
 
 - **Stable**
   - The version name is `vX` where `X` is an integer.
-  - The stable versions of features appear in released software for many subsequent versions.
+  - The stable versions of features appear in released software for many
+    subsequent versions.
 {{< /details >}}
 
 ### Group versions
@@ -39,8 +52,9 @@ _Taken from the [Kubernetes API versioning documentation](https://kubernetes.io/
 
 ## package-operator.run/v1alpha1
 
-The package v1alpha1 contains API Schema definitions for the v1alpha1 version of the core Package Operator API group,
-containing basic building blocks that other auxiliary APIs can build on top of.
+The package v1alpha1 contains API Schema definitions for the v1alpha1 version of
+the core Package Operator API group, containing basic building blocks that other
+auxiliary APIs can build on top of.
 
 - [ClusterObjectDeployment](#clusterobjectdeployment)
 - [ClusterObjectSet](#clusterobjectset)
@@ -109,12 +123,16 @@ status:
 
 ### ClusterObjectSet
 
-ClusterObjectSet reconciles a collection of objects through ordered phases and aggregates their status.
+ClusterObjectSet reconciles a collection of objects through ordered phases and
+aggregates their status.
 
-ClusterObjectSets behave similarly to Kubernetes ReplicaSets, by managing a collection of objects and being itself mostly immutable.
-This object type is able to suspend/pause reconciliation of specific objects to facilitate the transition between revisions.
+ClusterObjectSets behave similarly to Kubernetes ReplicaSets, by managing
+a collection of objects and being itself mostly immutable. This object type is
+able to suspend/pause reconciliation of specific objects to facilitate the transition
+between revisions.
 
-Archived ClusterObjectSets may stay on the cluster, to store information about previous revisions.
+Archived ClusterObjectSets may stay on the cluster, to store information about
+previous revisions.
 
 A Namespace-scoped version of this API is available as ObjectSet.
 
@@ -168,8 +186,9 @@ status:
 
 ### ClusterObjectSetPhase
 
-ClusterObjectSetPhase is an internal API, allowing a ClusterObjectSet to delegate a single phase to another custom controller.
-ClusterObjectSets will create subordinate ClusterObjectSetPhases when `.class` is set within the phase specification.
+ClusterObjectSetPhase is an internal API, allowing a ClusterObjectSet to delegate
+a single phase to another custom controller. ClusterObjectSets will create subordinate
+ClusterObjectSetPhases when `.class` is set within the phase specification.
 
 **Example**
 
@@ -224,9 +243,10 @@ status:
 
 ### ClusterObjectSlice
 
-ClusterObjectSlices are referenced by ObjectSets or ObjectDeployments and contain objects to
-limit the size of ObjectSet and ObjectDeployments when big packages are installed.
-This is necessary to work around the etcd object size limit of ~1.5MiB and to reduce load on the kube-apiserver.
+ClusterObjectSlices are referenced by ObjectSets or ObjectDeployments and contain
+objects to limit the size of ObjectSet and ObjectDeployments when big packages
+are installed. This is necessary to work around the etcd object size limit of ~1.5MiB
+and to reduce load on the kube-apiserver.
 
 **Example**
 
@@ -328,12 +348,15 @@ status:
 
 ### ObjectSet
 
-ObjectSet reconciles a collection of objects through ordered phases and aggregates their status.
+ObjectSet reconciles a collection of objects through ordered phases and aggregates
+their status.
 
-ObjectSets behave similarly to Kubernetes ReplicaSets, by managing a collection of objects and being itself mostly immutable.
-This object type is able to suspend/pause reconciliation of specific objects to facilitate the transition between revisions.
+ObjectSets behave similarly to Kubernetes ReplicaSets, by managing a collection
+of objects and being itself mostly immutable. This object type is able to suspend/pause
+reconciliation of specific objects to facilitate the transition between revisions.
 
-Archived ObjectSets may stay on the cluster, to store information about previous revisions.
+Archived ObjectSets may stay on the cluster, to store information about previous
+revisions.
 
 A Cluster-scoped version of this API is available as ClusterObjectSet.
 
@@ -388,8 +411,9 @@ status:
 
 ### ObjectSetPhase
 
-ObjectSetPhase is an internal API, allowing an ObjectSet to delegate a single phase to another custom controller.
-ObjectSets will create subordinate ObjectSetPhases when `.class` within the phase specification is set.
+ObjectSetPhase is an internal API, allowing an ObjectSet to delegate a single phase
+to another custom controller. ObjectSets will create subordinate ObjectSetPhases
+when `.class` within the phase specification is set.
 
 **Example**
 
@@ -445,9 +469,10 @@ status:
 
 ### ObjectSlice
 
-ObjectSlices are referenced by ObjectSets or ObjectDeployments and contain objects to
-limit the size of ObjectSets and ObjectDeployments when big packages are installed.
-This is necessary to work around the etcd object size limit of ~1.5MiB and to reduce load on the kube-apiserver.
+ObjectSlices are referenced by ObjectSets or ObjectDeployments and contain objects
+to limit the size of ObjectSets and ObjectDeployments when big packages are installed.
+This is necessary to work around the etcd object size limit of ~1.5MiB and to reduce
+load on the kube-apiserver.
 
 **Example**
 
@@ -880,7 +905,8 @@ Used in:
 
 ### RemotePhaseReference
 
-References remote phases aka ObjectSetPhase/ClusterObjectSetPhase objects to which a phase is delegated.
+References remote phases aka ObjectSetPhase/ClusterObjectSetPhase objects to which
+a phase is delegated.
 
 | Field | Description |
 | ----- | ----------- |
@@ -894,8 +920,8 @@ Used in:
 
 ## manifests.package-operator.run/v1alpha1
 
-The package v1alpha1 contains API Schema definitions for the v1alpha1 version of the manifests API group,
-containing file-based manifests for the packaging infrastructure.
+The package v1alpha1 contains API Schema definitions for the v1alpha1 version of
+the manifests API group, containing file-based manifests for the packaging infrastructure.
 
 - [PackageManifest](#packagemanifest)
 
@@ -951,7 +977,8 @@ Used in:
 
 ### PackageManifestSpec
 
-PackageManifestSpec represents the spec of the packagemanifest containing the details about phases and availability probes.
+PackageManifestSpec represents the spec of the packagemanifest containing the details
+about phases and availability probes.
 
 | Field | Description |
 | ----- | ----------- |
@@ -1002,7 +1029,8 @@ Used in:
 
 ### TemplateContextObjectMeta
 
-TemplateContextObjectMeta represents a simplified version of metav1.ObjectMeta for use in templates.
+TemplateContextObjectMeta represents a simplified version of metav1.ObjectMeta for
+use in templates.
 
 | Field | Description |
 | ----- | ----------- |
@@ -1017,7 +1045,8 @@ Used in:
 
 ### TemplateContextPackage
 
-TemplateContextPackage represents the (Cluster)Package object requesting this package content.
+TemplateContextPackage represents the (Cluster)Package object requesting this
+package content.
 
 | Field | Description |
 | ----- | ----------- |

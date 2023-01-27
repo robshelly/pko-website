@@ -4,7 +4,8 @@ weight: 100
 images: []
 ---
 
-In this guide, you will deploy a simple nginx web server, using the Package Operator - [Package API](/docs/getting_started/api-reference/#package).
+In this guide, you will deploy a simple nginx web server, using the Package
+Operator - [Package API](/docs/getting_started/api-reference/#package).
 
 During this guide you will:
 
@@ -21,7 +22,8 @@ To complete this guide you will need:
 * A container-registry to push images to\
 (optional when using tars and kind load)
 
-All files used during this guide are available in the [package-operator/examples](https://github.com/package-operator/examples) repository.
+All files used during this guide are available in the
+[package-operator/examples](https://github.com/package-operator/examples) repository.
 
 ## 1. Start
 
@@ -30,7 +32,8 @@ _Please refer to the files in `/1_applications/1_start` for this step._
 When packaging an application for Package Operator, you will need 2 things:
 
 1. One or more Kubernetes manifests (e.g. `deployment.yaml`)
-2. A [PackageManifest](/docs/getting_started/api-reference/#packagemanifest) object in a `manifest.yaml` file
+2. A [PackageManifest](/docs/getting_started/api-reference/#packagemanifest) object
+   in a `manifest.yaml` file
 
 ### Writing a PackageManifest
 
@@ -53,7 +56,8 @@ metadata:
 ---
 
 Packages may be cluster-scope, namespace-scope or both.\
-This controls whether you can install this package via `Package` or `ClusterPackage` API.\
+This controls whether you can install this package via `Package` or
+`ClusterPackage` API.\
 Namespaced packages can not contain cluster-scoped objects, like `Namespaces`.
 
 ```yaml
@@ -138,7 +142,8 @@ Package namespace/name
 And finally to build your package as a container image use:
 
 ```sh
-# -o will directly output a `podman/docker load` compatible tar.gz of your container image.
+# -o will directly output a `podman/docker load` compatible tar.gz
+# of your container image.
 # Use this flag if you don't want to push images to a container registry.
 # To give a demonstration, you can use nginx:local as your image url here.
 $ kubectl package build -t <your-image-url-goes-here> -o nginx.tar.gz 1_applications/1_start
@@ -150,13 +155,17 @@ $ kind load image-archive nginx.tar.gz
 $ kubectl package build -t <your-image-url-goes-here> --push 1_applications/1_start
 ```
 
-{{< alert text="If you load the image to a local registry (e.g. with `minikube image load` or `kind load`), specify a tag different than `latest` (e.g. `test` or `v1`), otherwise Package Operator won't be able to load it." />}}
+{{< alert text=`If you load the image to a local registry (e.g. with
+'minikube image load' or 'kind load'), specify a tag different than 'latest'
+(e.g. 'test' or 'v1'), otherwise Package Operator won't be able to load it.` />}}
 
 ### Deploy
 
 Now that you have build your first Package Operator package, we can deploy it!\
-You will find the `Package`-object template in the examples checkout under 1_applications/package.yaml.\
-Don't forget to change the image url so it corresponds to the one used when building the package.
+You will find the `Package`-object template in the examples checkout under
+1_applications/package.yaml.\
+Don't forget to change the image url so it corresponds to the one used when building
+the package.
 
 ```yaml
 apiVersion: package-operator.run/v1alpha1
@@ -187,13 +196,17 @@ nginx-deployment-cd55c47f5-szvh7   1/1     Running   0          79s
 
 _Please refer to the files in `/1_applications/2_templates` for this step._
 
-Next we want to make sure that the package can be installed multiple times into the same namespace. To accomplish this, we have to make the package more dynamic!
+Next we want to make sure that the package can be installed multiple times into
+the same namespace. To accomplish this, we have to make the package more dynamic!
 
 ### Go Templates
 
-By renaming `deployment.yaml` into `deployment.yaml.gotmpl`, we can enable [Go template](https://pkg.go.dev/text/template) support. Files suffixed with `.gotmpl` will be processed by the Go template engine before the YAML manifests are parsed.
+By renaming `deployment.yaml` into `deployment.yaml.gotmpl`, we can enable [Go template](https://pkg.go.dev/text/template)
+support. Files suffixed with `.gotmpl` will be processed by the Go template engine
+before the YAML manifests are parsed.
 
-[TemplateContext](/docs/getting_started/api-reference/#templatecontext) is documented as part of the API.
+[TemplateContext](/docs/getting_started/api-reference/#templatecontext) is documented
+as part of the API.
 
 ```yaml
 app.kubernetes.io/instance: "{{.Package.Name}}"
@@ -204,9 +217,12 @@ app.kubernetes.io/instance: "{{.Package.Name}}"
 Using a template engine with yaml files can quickly lead to unexpected results.\
 To aid with testing, Package Operator includes a simple package testing framework.
 
-Template tests may be configured as part of the `PackageManifest`, by specifying the TemplateContext data to test the template process with.
+Template tests may be configured as part of the `PackageManifest`, by specifying
+the TemplateContext data to test the template process with.
 
-For each template test, Package Operator will auto-generate fixtures into a `.test-fixtures` folder when running `kubectl package validate` or `build` and compare the output of successive template operations against these fixtures.
+For each template test, Package Operator will auto-generate fixtures into a `.test-fixtures`
+folder when running `kubectl package validate` or `build` and compare the output
+of successive template operations against these fixtures.
 
 ```yaml
 test:
@@ -247,7 +263,9 @@ Error: Package validation errors:
        app.kubernetes.io/instance: "my-cool-name"
 ```
 
-To continue building the package, either reset your change to the template, edit the fixture or delete the `.test-fixtures` folder and regenerate all fixtures by running the validate command again.
+To continue building the package, either reset your change to the template, edit
+the fixture or delete the `.test-fixtures` folder and regenerate all fixtures by
+running the validate command again.
 
 ### Upgrade/Deploy
 
@@ -277,7 +295,8 @@ my-nginx   Available     65m
 ```
 
 ---
-The name of the deployment is now using the name of the Package object, so it's safe to create multiple instances of the same package.\
+The name of the deployment is now using the name of the Package object, so it's
+safe to create multiple instances of the same package.\
 Just change the name of `1_applications/package.yaml` and deploy your package again:
 
 ```sh
