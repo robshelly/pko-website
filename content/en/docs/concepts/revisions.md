@@ -42,13 +42,13 @@ direction LR
   Archived --> [*]
 ```
 
-- **Pending**  
+- **Pending**\
   Intermediate state before the controller posted its first update.
-- **Available**  
+- **Available**\
   All availability probes are successful.
-- **Not Ready**  
+- **Not Ready**\
   One or more availability probes are unsuccessful.
-- **Archived**  
+- **Archived**\
   (Cluster)ObjectSet is shutdown and only acts as a revision tombstone for rollbacks.
 
 In addition to these major lifecycle states, (Cluster)ObjectSets may be **Paused**, stopping reconciliation, while still reporting status.
@@ -58,9 +58,9 @@ This can be useful for testing and debugging.
 
 Depending on the contents of the new revision, objects are eventually either:
 
-- **Patched**  
+- **Patched**\
   If the object still part of the new revision, it will be handed over to the next revision.
-- **Deleted**  
+- **Deleted**\
   If the object is not part of the new revision, it will be deleted when the old revision is archived.
 
 ### In-Place Updates
@@ -129,6 +129,7 @@ Under normal circumstances at max 2 Revisions can be active during rollout. An o
 If a revision fails to become available due to e.g. misconfiguration and a new revision supersedes it, multiple intermediate revisions might be active until the latest revision becomes available.
 
 Intermediate revisions will only be cleaned up if:
+
 - Latest revision becomes available
 - Revision is not reconciling any objects anymore
 - Latest revision is not containing any object still actively reconciled by an intermediate

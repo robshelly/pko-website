@@ -24,7 +24,7 @@ Helping users in installing and maintaining complex software on one or multiple 
 
 ## Objectives
 
-**Security, Stability, Transparency, Extensibility**  
+**Security, Stability, Transparency, Extensibility**\
 (in this order)
 
 ### Security
@@ -39,12 +39,12 @@ Package Operator commits to stability and extensive automated testing for any fe
 
 ### Transparency
 
-Stability is never absolute, so it's crucial to be transparent.  
+Stability is never absolute, so it's crucial to be transparent.\
 Transparency enables users of the Package Operator to debug and resolve issues, with either their own workloads or the Package Operator itself, in a timely and sane manner.
 
 ### Extensibility
 
-The Kubernetes ecosystem is moving _fast_, really _fast_.  
-New Operators, APIs, procedures and tools are being created at an astounding pace. 
+The Kubernetes ecosystem is moving _fast_, really _fast_.\
+New Operators, APIs, procedures and tools are being created at an astounding pace.
 
 Package Operator tries to be plug-able, allowing users to use any kind of custom resource registered on the Kubernetes cluster. Facilities of Package Operator are also setup to be overridden, so they can be switched for custom or alternative implementations.

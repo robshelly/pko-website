@@ -79,7 +79,8 @@ ADD . /package
 ```
 
 ### Structure
-```
+
+```tree
 package
 │   manifest.yaml
 │   README.md
@@ -94,7 +95,7 @@ package
 │       │   cache-db.yaml
 │       │   cache-config.yaml
 │       │   ...
-│   
+│
 └───backend
     │   backend-deployment.yaml
     │   backend-config.yaml

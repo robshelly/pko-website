@@ -18,7 +18,7 @@ to deploy and interact with Package Operator and your packages.
 
 ## kubectl-package
 
-Package Operator provides a kubectl plugin to validate, package and inspect Package Operator packages.  
+Package Operator provides a kubectl plugin to validate, package and inspect Package Operator packages.\
 The binaries can be found on the [Package Operator Releases](https://github.com/package-operator/package-operator/releases) page.
 
 ## Container Runtime

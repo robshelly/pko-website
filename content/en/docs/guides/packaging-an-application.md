@@ -7,6 +7,7 @@ images: []
 In this guide, you will deploy a simple nginx web server, using the Package Operator - [Package API](/docs/getting_started/api-reference/#package).
 
 During this guide you will:
+
 * Create a `manifest.yaml` file
 * Assign Kubernetes objects to PKO phases
 * Take advantage of templates
@@ -14,9 +15,10 @@ During this guide you will:
 * Build and Validate the Package Operator package
 
 To complete this guide you will need:
+
 * A Kubernetes cluster with Package Operator installed
 * The `kubectl-package` CLI plugin
-* A container-registry to push images to  
+* A container-registry to push images to\
 (optional when using tars and kind load)
 
 All files used during this guide are available in the [package-operator/examples](https://github.com/package-operator/examples) repository.
@@ -26,48 +28,58 @@ All files used during this guide are available in the [package-operator/examples
 _Please refer to the files in `/1_applications/1_start` for this step._
 
 When packaging an application for Package Operator, you will need 2 things:
+
 1. One or more Kubernetes manifests (e.g. `deployment.yaml`)
 2. A [PackageManifest](/docs/getting_started/api-reference/#packagemanifest) object in a `manifest.yaml` file
 
 ### Writing a PackageManifest
 
 Like with any Kubernetes object Group Version Kind contains the version information:
+
 ```yaml
 apiVersion: manifests.package-operator.run/v1alpha1
 kind: PackageManifest
 ```
+
 ---
 
 Metadata contains the name of this package:
+
 ```yaml
 metadata:
   name: nginx
 ```
+
 ---
 
-Packages may be cluster-scope, namespace-scope or both.  
-This controls whether you can install this package via `Package` or `ClusterPackage` API.  
+Packages may be cluster-scope, namespace-scope or both.\
+This controls whether you can install this package via `Package` or `ClusterPackage` API.\
 Namespaced packages can not contain cluster-scoped objects, like `Namespaces`.
+
 ```yaml
 spec:
   scopes:
   - Namespaced
 ```
+
 ---
 Phases are needed when you need a distinct order in your rollout or teardown.
 
 Examples:
-- Ensure an application is completely upgraded before reconfiguring the LB
-- Run a database migration before bringing up the new Deployment
-- Ensure CRDs are Established before deploying your Operator
+
+* Ensure an application is completely upgraded before reconfiguring the LB
+* Run a database migration before bringing up the new Deployment
+* Ensure CRDs are Established before deploying your Operator
+
 ```yaml
 spec:
   phases:
   - name: deploy
 ```
+
 ---
 
-Probes define how Package Operator interrogates objects under management for status.  
+Probes define how Package Operator interrogates objects under management for status.\
 PKO will only continue into the next Phase if all objects passed their availabilityProbe.
 
 ```yaml
@@ -88,7 +100,7 @@ spec:
 
 ### Assigning objects to phases
 
-Package Operators needs to know in which phase objects belong.  
+Package Operators needs to know in which phase objects belong.\
 To assign an object to a phase, simply add an annotation:
 
 ```yaml
@@ -100,6 +112,7 @@ metadata:
 ### Build & Validate
 
 If you just want to validate the local package contents, use:
+
 ```sh
 $ kubectl package validate 1_applications/1_start
 
@@ -107,8 +120,10 @@ $ kubectl package validate 1_applications/1_start
 Error: Package validation errors:
 - Missing package-operator.run/phase Annotation in deployment.yaml#0
 ```
+
 ---
 To inspect the parsed hierarchy of your package, use:
+
 ```sh
 $ kubectl package tree 1_applications/1_start
 
@@ -118,8 +133,10 @@ Package namespace/name
 └── Phase deploy
     └── apps/v1, Kind=Deployment /nginx-deployment
 ```
+
 ---
 And finally to build your package as a container image use:
+
 ```sh
 # -o will directly output a `podman/docker load` compatible tar.gz of your container image.
 # Use this flag if you don't want to push images to a container registry.
@@ -137,8 +154,8 @@ $ kubectl package build -t <your-image-url-goes-here> --push 1_applications/1_st
 
 ### Deploy
 
-Now that you have build your first Package Operator package, we can deploy it!  
-You will find the `Package`-object template in the examples checkout under 1_applications/package.yaml.  
+Now that you have build your first Package Operator package, we can deploy it!\
+You will find the `Package`-object template in the examples checkout under 1_applications/package.yaml.\
 Don't forget to change the image url so it corresponds to the one used when building the package.
 
 ```yaml
@@ -178,13 +195,13 @@ By renaming `deployment.yaml` into `deployment.yaml.gotmpl`, we can enable [Go t
 
 [TemplateContext](/docs/getting_started/api-reference/#templatecontext) is documented as part of the API.
 
-```
+```yaml
 app.kubernetes.io/instance: "{{.Package.Name}}"
 ```
 
 ### Testing Templates
 
-Using a template engine with yaml files can quickly lead to unexpected results.  
+Using a template engine with yaml files can quickly lead to unexpected results.\
 To aid with testing, Package Operator includes a simple package testing framework.
 
 Template tests may be configured as part of the `PackageManifest`, by specifying the TemplateContext data to test the template process with.
@@ -237,28 +254,33 @@ To continue building the package, either reset your change to the template, edit
 Build your package again using a different tag or image name:
 
 ```sh
-$ kubectl package build -t <your-image-url-goes-here> --push 1_applications/2_templates
+kubectl package build -t <your-image-url-goes-here> --push 1_applications/2_templates
 ```
+
 ---
 Edit the `Package` object on the cluster to change the `image:`.
+
 ```sh
-$ kubectl edit package
+kubectl edit package
 ```
+
 ---
 Watch the change being rolled out:
+
 ```sh
-kubectl get package -w                   
+kubectl get package -w
 NAME       STATUS      AGE
 my-nginx   Available   65m
 my-nginx   Progressing   65m
 my-nginx   Progressing   65m
 my-nginx   Available     65m
 ```
+
 ---
-The name of the deployment is now using the name of the Package object, so it's safe to create multiple instances of the same package.  
+The name of the deployment is now using the name of the Package object, so it's safe to create multiple instances of the same package.\
 Just change the name of `1_applications/package.yaml` and deploy your package again:
 
-```
+```sh
 $ kubectl get package
 NAME          STATUS      AGE
 my-nginx      Available   69m

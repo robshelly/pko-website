@@ -40,7 +40,7 @@ _Taken from the [Kubernetes API versioning documentation](https://kubernetes.io/
 {{< /details >}}
 
 ### Group versions
-- [package-operator.run/v1alpha1](#package-operatorrunv1alpha1)  
+- [package-operator.run/v1alpha1](#package-operatorrunv1alpha1)\
 - [manifests.package-operator.run/v1alpha1](#manifestspackage-operatorrunv1alpha1)
 
 EOF
