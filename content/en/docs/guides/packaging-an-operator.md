@@ -4,20 +4,25 @@ weight: 300
 images: []
 ---
 
-This guide extends on [Packaging an Application](/docs/guides/packaging-an-application/), with the goal to package and deploy an Kubernetes Operator using the Package Operator - [ClusterPackage API](/docs/getting_started/api-reference/#clusterpackage).
+This guide extends on [Packaging an Application](/docs/guides/packaging-an-application/),
+with the goal to package and deploy an Kubernetes Operator using the Package
+Operator - [ClusterPackage API](/docs/getting_started/api-reference/#clusterpackage).
 
 During this guide you will:
+
 * Create a `manifest.yaml` file
 * Use multiple PKO phases
 * Build and Validate the Package Operator package
 
 To complete this guide you will need:
+
 * A Kubernetes cluster with Package Operator installed
 * The `kubectl-package` CLI plugin
-* A container-registry to push images to  
+* A container-registry to push images to\
 (optional when using tars and kind load)
 
-All files used during this guide are available in the [package-operator/examples](https://github.com/package-operator/examples) repository.
+All files used during this guide are available in the
+[package-operator/examples](https://github.com/package-operator/examples) repository.
 
 ## 1. Start
 
@@ -25,7 +30,8 @@ _Please refer to the files in `/2_operators/1_start` for this step._
 
 ### Writing a PackageManifest
 
-Operators are always installed for the whole cluster, so the package is also scoped for the cluster.
+Operators are always installed for the whole cluster, so the package is also
+scoped for the cluster.
 
 ```yaml
 spec:
@@ -35,13 +41,13 @@ spec:
 
 ---
 
-Operators require distinct order-of-operations to successfully install.  
+Operators require distinct order-of-operations to successfully install.\
 The phases list represents these steps.
 
-- `CustomResourceDefinitions` have no pre-requisites, so they come first.
-- `Namespaces` also has no dependencies.
-- `ServiceAccount` and `RoleBinding` need the `Namespace`
-- `Deployment` needs all of the above.
+* `CustomResourceDefinitions` have no pre-requisites, so they come first.
+* `Namespaces` also has no dependencies.
+* `ServiceAccount` and `RoleBinding` need the `Namespace`
+* `Deployment` needs all of the above.
 
 ```yaml
 spec:
@@ -52,7 +58,7 @@ spec:
   - name: deploy
 ```
 
-Probes define how Package Operator interrogates objects under management for status.  
+Probes define how Package Operator interrogates objects under management for status.\
 For this operator we want to add a new probe to ensure the CRDs have been established.
 
 ```yaml
@@ -81,7 +87,7 @@ spec:
 
 ### Assigning objects to phases
 
-Package Operators needs to know in which phase objects belong.  
+Package Operators needs to know in which phase objects belong.\
 To assign an object to a phase, simply add an annotation:
 
 ```yaml
@@ -91,9 +97,11 @@ metadata:
 ```
 
 ### Build & Validate
+
 To inspect the parsed hierarchy of your package, use:
+
 ```sh
-$ kubectl package tree --cluster 2_operators/1_start 
+$ kubectl package tree --cluster 2_operators/1_start
 
 # example:
 example-operator
@@ -111,10 +119,13 @@ ClusterPackage /name
 └── Phase deploy
     └── apps/v1, Kind=Deployment example-operator/example-operator
 ```
+
 ---
 And finally to build your package as a container image use:
+
 ```sh
-# -o will directly output a `podman/docker load` compatible tar.gz of your container image.
+# -o will directly output a `podman/docker load` compatible tar.gz
+# of your container image.
 # Use this flag if you don't want to push images to a container registry.
 $ kubectl package build -t <your-image-url-goes-here> -o example-operator.tar.gz 2_operators/1_start
 # example: load image into kind nodes:
@@ -127,7 +138,7 @@ $ kubectl package build -t <your-image-url-goes-here> --push 2_operators/1_start
 
 ### Deploy
 
-Now that you have build your first Package Operator package, we can deploy it!  
+Now that you have build your first Package Operator package, we can deploy it!\
 You will find the `Package`-object template in the examples checkout under 2_operators/clusterpackage.yaml.
 
 ```yaml

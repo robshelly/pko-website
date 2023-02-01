@@ -6,13 +6,14 @@ weight: 200
 toc: true
 ---
 
-Package Operator is watching and if needed reconciling all objects under management.  
+Package Operator is watching and if needed reconciling all objects under management.\
 This page describes in detail how individual objects are updated.
 
 Ordering of multiple objects is described on the [Phases page](/docs/concepts/phases).
 How object status is interpreted is described further on the [Probes page](/docs/concepts/probes).
 
 Object update rules:
+
 - specified fields **MUST** always be reconciled to reset changes by other users
 - additional labels and annotations for e.g. cache-control **MUST** be respected
 - unspecified fields **MAY** be defaulted by admission controllers or webhooks
@@ -22,7 +23,9 @@ Object update rules:
 
 ### Annotations/Labels
 
-Annotations and Labels defined by users or other controllers and integrations are not overridden or replaced. Only labels and annotations explicitly set are reconciled to the specified value.
+Annotations and Labels defined by users or other controllers and integrations are
+not overridden or replaced. Only labels and annotations explicitly set are reconciled
+to the specified value.
 
 This is important, as Kubernetes operators may use labels to scope their caches.
 It also allows humans to add extra labels and annotations for ops or debugging work.
@@ -54,6 +57,7 @@ metadata:
     notice: important!
 spec: {}
 ```
+
 {{< /columns >}}
 
 **Result after Reconcile**
@@ -73,7 +77,8 @@ spec: {}
 
 ### Replicas
 
-Fields not explicitly specified, may be defaulted or changed, without being reset by the Package Operator.
+Fields not explicitly specified, may be defaulted or changed, without being reset
+by the Package Operator.
 
 {{< columns >}}
 **Desired Object in Package Operator**
@@ -103,6 +108,7 @@ spec:
   replicas: 3
   template: {}
 ```
+
 {{< /columns >}}
 
 **Result**

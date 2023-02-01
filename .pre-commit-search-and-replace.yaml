@@ -1,0 +1,3 @@
+- search: /([^ ])  $/
+  replacement: \1\
+  description: Trailing double whitespace line break
