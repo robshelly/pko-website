@@ -163,9 +163,13 @@ $ kubectl package build -t <your-image-url-goes-here> --push 1_applications/1_st
 
 Now that you have build your first Package Operator package, we can deploy it!\
 You will find the `Package`-object template in the examples checkout under
-1_applications/package.yaml.\
-Don't forget to change the image url so it corresponds to the one used when building
-the package.
+1_applications/package.yaml. Don't forget to change the package url so it \
+corresponds to the one used when building the package.
+
+If the package specified a configuration set, its values are to be specified in \
+a config section within the spec. If a config entry has a default specified in \
+the package manifest it may be overridden here. If the package requires values \
+that are not defaulted and missing here, the package installation will fail.
 
 ```yaml
 apiVersion: package-operator.run/v1alpha1
@@ -173,7 +177,9 @@ kind: Package
 metadata:
   name: my-nginx
 spec:
-  image: <your-image-url-goes-here>
+  image: <your-package-url-goes-here>
+  config:
+    nginxImage: "nginx:1.23.3"
 ```
 
 ```sh
@@ -201,16 +207,23 @@ the same namespace. To accomplish this, we have to make the package more dynamic
 
 ### Go Templates
 
-By renaming `deployment.yaml` into `deployment.yaml.gotmpl`, we can enable [Go template](https://pkg.go.dev/text/template)
-support. Files suffixed with `.gotmpl` will be processed by the Go template engine
-before the YAML manifests are parsed.
+By renaming `deployment.yaml` into `deployment.yaml.gotmpl`, we can enable \
+[Go template](https://pkg.go.dev/text/template) support. Files suffixed with \
+`.gotmpl` will be processed by the Go template engine before the YAML manifests \
+are parsed.
 
-[TemplateContext](/docs/getting_started/api-reference/#templatecontext) is documented
-as part of the API.
+[TemplateContext](/docs/getting_started/api-reference/#templatecontext) is \
+documented as part of the API. It always contains information like package \
+metadata that can be used to reduce reduncancies.
 
 ```yaml
-app.kubernetes.io/instance: "{{.Package.Name}}"
+app.kubernetes.io/instance: "{{.package.metadata.name}}"
 ```
+
+Additionally, a config section may be added to packages, which requires said \
+config to be specified within the package manifest as \
+[OpenAPI spec](https://spec.openapis.org/oas/v3.1.0). It is recommended require \
+value that are always needed for package deployment and set defaults if appropriate.
 
 ### Testing Templates
 
@@ -242,7 +255,7 @@ Now make a change to the template and validate the package again:
 ```yaml
 #...
 metadata:
-  name: "{{.Package.Name}}-deploy"
+  name: "{{.package.metadata.Name}}-deploy"
 #...
 ```
 
