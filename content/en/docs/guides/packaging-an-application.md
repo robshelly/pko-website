@@ -225,6 +225,24 @@ config to be specified within the package manifest as \
 [OpenAPI spec](https://spec.openapis.org/oas/v3.1.0). It is recommended require \
 value that are always needed for package deployment and set defaults if appropriate.
 
+To inspect the parsed hierarchy of your package when using a config section you \
+must provide a configuration file with the required values:
+
+```yaml
+nginxImage: "nginx:1.23.3"
+```
+
+```sh
+kubectl package tree 1_applications/2_templates/ --config-path config.yaml
+```
+
+Alternatively the config section of a named test template within the manifest \
+can be used:
+
+```sh
+kubectl package tree 1_applications/2_templates/ --config-testcase namespace-scope
+```
+
 ### Testing Templates
 
 Using a template engine with yaml files can quickly lead to unexpected results.\
