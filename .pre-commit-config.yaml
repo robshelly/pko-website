@@ -20,10 +20,10 @@ repos:
     hooks:
       - id: markdownlint-fix
         types: [markdown]
-        exclude: themes/
+        exclude: 'themes/.*|content/en/docs/getting_started/api-reference.md'
   - repo: https://github.com/codespell-project/codespell
     rev: v2.2.2
     hooks:
       - id: codespell
         types: [markdown]
-        exclude: themes/
+        exclude: 'themes/.*|content/en/docs/getting_started/api-reference.md'
