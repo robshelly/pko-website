@@ -55,6 +55,8 @@ a package.
 ```yaml
 apiVersion: manifests.package-operator.run/v1alpha1
 kind: PackageManifest
+metadata:
+  name: example
 spec:
   scopes:
   - Cluster
