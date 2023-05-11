@@ -25,10 +25,6 @@ A selector specifying what objects to apply a probe to and a list of probes to c
 
 All available probing declarations can be found in [API Reference - ObjectSetProbe](/docs/getting_started/api-reference/#objectsetprobe).
 
-Not every resource in a package needs a probe, however `availabilityProbes` is a
-required field in the [package manifest file](/docs/concepts/package-format),
-meaning there needs to be at least one probe.
-
 ## Examples
 
 ### Deployment
