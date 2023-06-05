@@ -134,8 +134,7 @@ metadata:
   uid: 4ceda067-14b7-439d-8040-e983dd7d1545
 spec:
   config:
-    "":
-      database: database-123
+    database: database-123
   image: quay.io/package-operator/test-stub-package:v1.0.0-47-g3405dde
 status:
   conditions:
