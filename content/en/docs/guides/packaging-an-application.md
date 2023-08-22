@@ -27,7 +27,7 @@ All files used during this guide are available in the
 
 ## 1. Start
 
-_Please refer to the files in `/1_applications/1_start` for this step._
+_To complete this step, refer to the files in [/1_applications/1_start](https://github.com/package-operator/examples/tree/main/1_applications/1_start)._
 
 When packaging an application for Package Operator, you will need 2 things:
 
@@ -37,7 +37,7 @@ When packaging an application for Package Operator, you will need 2 things:
 
 ### Writing a PackageManifest
 
-Like with any Kubernetes object Group Version Kind contains the version information:
+Like with any Kubernetes object, Group Version Kind contains the version information:
 
 ```yaml
 apiVersion: manifests.package-operator.run/v1alpha1
@@ -55,10 +55,10 @@ metadata:
 
 ---
 
-Packages may be cluster-scope, namespace-scope or both.\
+Packages may be cluster-scoped, namespace-scoped, or both.\
 This controls whether you can install this package via `Package` or
 `ClusterPackage` API.\
-Namespaced packages can not contain cluster-scoped objects, like `Namespaces`.
+Namespace-scoped packages can not contain cluster-scoped objects, like `Namespaces`.
 
 ```yaml
 spec:
@@ -71,9 +71,10 @@ Phases are needed when you need a distinct order in your rollout or teardown.
 
 Examples:
 
-* Ensure an application is completely upgraded before reconfiguring the LB
+* Ensure an application is completely upgraded before reconfiguring the load balancer
 * Run a database migration before bringing up the new Deployment
-* Ensure CRDs are Established before deploying your Operator
+* Ensure Customer Resource Definitins (CRDs) are Established before deploying
+your Operator
 
 ```yaml
 spec:
@@ -104,7 +105,7 @@ spec:
 
 ### Assigning objects to phases
 
-Package Operators needs to know in which phase objects belong.\
+Package Operators need to know in which phase objects belong.\
 To assign an object to a phase, simply add an annotation:
 
 ```yaml
@@ -115,23 +116,32 @@ metadata:
 
 ### Build & Validate
 
-If you just want to validate the local package contents, use:
+If you just want to validate the local package contents, run the
+`kubectl package validate` command:
 
 ```sh
-$ kubectl package validate 1_applications/1_start
+kubectl package validate 1_applications/1_start
+```
 
-# example:
+\
+Example output:
+
+```sh
 Error: Package validation errors:
 - Missing package-operator.run/phase Annotation in deployment.yaml#0
 ```
 
 ---
-To inspect the parsed hierarchy of your package, use:
+To inspect the parsed hierarchy of your package, run the `kubectl package tree` command:
 
 ```sh
-$ kubectl package tree 1_applications/1_start
+kubectl package tree 1_applications/1_start
+```
 
-# example:
+\
+Example output:
+
+```sh
 nginx
 Package namespace/name
 └── Phase deploy
@@ -139,37 +149,76 @@ Package namespace/name
 ```
 
 ---
-And finally to build your package as a container image use:
+Finally, to build your package as a container image use one of the following methods:
 
-```sh
-# -o will directly output a `podman/docker load` compatible tar.gz
-# of your container image.
-# Use this flag if you don't want to push images to a container registry.
-# To give a demonstration, you can use nginx:local as your image url here.
-$ kubectl package build -t <your-image-url-goes-here> -o nginx.tar.gz 1_applications/1_start
-# example: load image into kind nodes:
-$ kind load image-archive nginx.tar.gz
+**Method 1:**
 
-# Alternatively push images directly to a registry.
-# Assumes you are already logged into a registry via `podman/docker login`
-$ kubectl package build -t <your-image-url-goes-here> --push 1_applications/1_start
-```
+1. Utilize the `-o` flag to directly generate a tar.gz file
+compatible with podman/docker load.
+This option is suitable if you do not intend to push images to a container registry:
 
-{{< alert text=`If you load the image to a local registry (e.g. with
-'minikube image load' or 'kind load'), specify a tag different than 'latest'
-(e.g. 'test' or 'v1'), otherwise Package Operator won't be able to load it.` />}}
+    ```sh
+    kubectl package build -t <your-image-url-goes-here> -o <output-file-name>.tar.gz <path-to-package-contents>
+    ```
+
+    \
+    Example:
+
+    ```sh
+    kubectl package build -t nginx:local -o nginx.tar.gz 1_applications/1_start
+    ```
+
+\
+2. Load the image into kind or minikube nodes.
+
+* For kind nodes use:
+
+    ```sh
+    kind load image-archive nginx.tar.gz
+    ```
+
+* For minikube nodes, use:
+
+    ```sh
+    minikube image load nginx.tar.gz
+    ```
+
+    {{< alert text=`When loading the image to a local registry
+    using 'minikube image load' or 'kind load', specify a tag
+    other than 'latest', otherwise Package Operator will not be
+    able to load it.` />}}
+
+**Method 2:**
+
+1. To directly push images to a registry, assuming you've already
+logged in using podman/docker login, use the following command:
+
+    ```sh
+    kubectl package build -t <your-image-url-goes-here> --push <path-to-package-contents>
+    ```
+
+    \
+   Example:
+
+    ```sh
+    kubectl package build -t quay.io/myquayusername/nginx --push 1_applications/1_start
+    ```
 
 ### Deploy
 
-Now that you have build your first Package Operator package, we can deploy it!\
-You will find the `Package`-object template in the examples checkout under
+Now that you have built your first Package Operator package, we can deploy it!\
+You will find the `Package`-object template in the examples directory under
 1_applications/package.yaml. Don't forget to change the package url so it \
 corresponds to the one used when building the package.
+For example, replace
+`image: <your-package-url-goes-here>` with `image: "quay.io/myquayusername/nginx"`.
 
-If the package specified a configuration set, its values are to be specified in \
+If the package specifies a configuration set, its values are to be specified in \
 a config section within the spec. If a config entry has a default specified in \
 the package manifest it may be overridden here. If the package requires values \
 that are not defaulted and missing here, the package installation will fail.
+
+Example Package-object template:
 
 ```yaml
 apiVersion: package-operator.run/v1alpha1
@@ -182,32 +231,52 @@ spec:
     nginxImage: "nginx:1.23.3"
 ```
 
-```sh
-$ kubectl create -f 1_applications/package.yaml
-package.package-operator.run/my-nginx created
+1. To deploy the package, execute the following command:
 
-# wait for package to be loaded and installed:
-$ kubectl get package -w
-NAME       STATUS        AGE
-my-nginx   Progressing   11s
-my-nginx   Available     13s
+   ```sh
+   kubectl create -f 1_applications/package.yaml
+   ```
 
-# success!
-$ kubectl get po
-NAME                               READY   STATUS    RESTARTS   AGE
-nginx-deployment-cd55c47f5-szvh7   1/1     Running   0          79s
-```
+   \
+   You will receive a confirmation message similar to:
+
+   ```sh
+   package.package-operator.run/my-nginx created
+   ```
+
+2. Wait for package to be loaded and installed:
+
+   ```sh
+   kubectl get package -w
+   ```
+
+   \
+   The status will change from `Progressing` to `Available`:
+
+   ```sh
+   NAME       STATUS        AGE
+   my-nginx   Progressing   11s
+   my-nginx   Available     13s
+   ```
+
+3. Finally, to verify the deployment status, run:
+
+   ```sh
+   kubectl get po
+   ```
+
+   A "READY" value of `1/1` and a "STATUS" of "Running" indicate a successful deployment.
 
 ## 2. Templates
 
-_Please refer to the files in `/1_applications/2_templates` for this step._
+_To complete this step, refer to the files in [/1_applications/2_templates](https://github.com/package-operator/examples/tree/main/1_applications/2_templates)._
 
-Next we want to make sure that the package can be installed multiple times into
+Next, we want to make sure that the package can be installed multiple times into
 the same namespace. To accomplish this, we have to make the package more dynamic!
 
 ### Go Templates
 
-By renaming `deployment.yaml` into `deployment.yaml.gotmpl`, we can enable \
+By renaming `deployment.yaml` to `deployment.yaml.gotmpl`, we can enable \
 [Go template](https://pkg.go.dev/text/template) support. Files suffixed with \
 `.gotmpl` will be processed by the Go template engine before the YAML manifests \
 are parsed.
@@ -220,23 +289,28 @@ metadata that can be used to reduce reduncancies.
 app.kubernetes.io/instance: "{{.package.metadata.name}}"
 ```
 
-Additionally, a config section may be added to packages, which requires said \
-config to be specified within the package manifest as \
-[OpenAPI spec](https://spec.openapis.org/oas/v3.1.0). It is recommended require \
-value that are always needed for package deployment and set defaults if appropriate.
+Additionally, packages can include a `config` section. This section requires
+the config to be specified in the package manifest as an
+[OpenAPI specification](https://spec.openapis.org/oas/v3.1.0). It is
+recommended to require values that are always needed for package
+deployment and set defaults if appropriate.
 
-To inspect the parsed hierarchy of your package when using a config section you \
+To inspect the parsed hierarchy of your package when using a `config` section you
 must provide a configuration file with the required values:
+
+Example `config.yaml`:
 
 ```yaml
 nginxImage: "nginx:1.23.3"
 ```
 
+Inspect the parsed hierarchy of your package:
+
 ```sh
 kubectl package tree 1_applications/2_templates/ --config-path config.yaml
 ```
 
-Alternatively the config section of a named test template within the manifest \
+Alternatively, the config section of a named test template within the manifest \
 can be used:
 
 ```sh
@@ -268,7 +342,7 @@ test:
 
 ---
 
-Now make a change to the template and validate the package again:
+Make a change to the template:
 
 ```yaml
 #...
@@ -276,6 +350,8 @@ metadata:
   name: "{{.package.metadata.Name}}-deploy"
 #...
 ```
+
+Validate the package again:
 
 ```sh
 $ kubectl package validate 1_applications/2_templates
@@ -300,44 +376,92 @@ running the validate command again.
 
 ### Upgrade/Deploy
 
-Build your package again using a different tag or image name:
+This section provides a steps on how to upgrade or
+deploy your package using the Package Operator.
 
-```sh
-kubectl package build -t <your-image-url-goes-here> --push 1_applications/2_templates
-```
+1. Build your package again using a different tag or image name:
+
+   ```sh
+   kubectl package build -t <your-image-url-goes-here> --push 1_applications/2_templates
+   ```
+
+2. Edit the `Package` object on the cluster to change the `image:` to
+the new build tag.
+  Example:
+
+   ```sh
+   kubectl edit package
+   ```
+
+   change:
+
+   ```sh
+   #...
+   spec:
+    config:
+      nginxImage: nginx:1.23.3
+    image: quay.io/myquayusername/nginx:0.0.1
+    #...
+   ```
+
+   to:
+
+   ```sh
+   #...
+   spec:
+     config:
+       nginxImage: nginx:1.23.3
+     image: quay.io/myquayusername/nginx:0.0.2
+   #...
+   ```
+
+3. Monitor the change being rolled out:
+
+   ```sh
+   kubectl get package -w
+   ```
+
+   The status will transition from `Progressing` to `Available`.
 
 ---
-Edit the `Package` object on the cluster to change the `image:`.
+The deployment's name now utilizes the name of the Package object, making it safe
+to create multiple instances of the same package.
 
-```sh
-kubectl edit package
-```
+1. Modify the `name` in `1_applications/package.yaml` file and redploy your package:
 
----
-Watch the change being rolled out:
+   * Change the Package name in the YAML file:
 
-```sh
-kubectl get package -w
-NAME       STATUS      AGE
-my-nginx   Available   65m
-my-nginx   Progressing   65m
-my-nginx   Progressing   65m
-my-nginx   Available     65m
-```
+     ```yaml
+     #...
+     kind: Package
+     metadata:
+       name: other-nginx
+     #...
+     ```
 
----
-The name of the deployment is now using the name of the Package object, so it's
-safe to create multiple instances of the same package.\
-Just change the name of `1_applications/package.yaml` and deploy your package again:
+   * Redeploy the package:
 
-```sh
-$ kubectl get package
-NAME          STATUS      AGE
-my-nginx      Available   69m
-other-nginx   Available   6s
+     ```sh
+     kubectl create -f 1_applications/package.yaml
+     package.package-operator.run/other-nginx created
+     ```
 
-$ kubectl get deploy
-NAME          READY   UP-TO-DATE   AVAILABLE   AGE
-my-nginx      1/1     1            1           6m25s
-other-nginx   1/1     1            1           117s
-```
+2. Verify the changes:
+
+   * Check the package status:
+
+     ```sh
+     $ kubectl get package
+     NAME          STATUS      AGE
+     my-nginx      Available   69m
+     other-nginx   Available   6s
+     ```
+
+   * Check the deployments:
+
+     ```sh
+     $ kubectl get deploy
+     NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+     my-nginx      1/1     1            1           6m25s
+     other-nginx   1/1     1            1           117s
+     ```
