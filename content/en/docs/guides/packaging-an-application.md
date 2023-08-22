@@ -73,7 +73,7 @@ Examples:
 
 * Ensure an application is completely upgraded before reconfiguring the load balancer
 * Run a database migration before bringing up the new Deployment
-* Ensure Customer Resource Definitins (CRDs) are Established before deploying
+* Ensure Custom Resource Definitins (CRDs) are Established before deploying
 your Operator
 
 ```yaml
@@ -124,7 +124,7 @@ kubectl package validate 1_applications/1_start
 ```
 
 \
-Example output:
+For example, if you encounter an issue such as a missing annotation, the output might look like this:
 
 ```sh
 Error: Package validation errors:
@@ -276,9 +276,9 @@ the same namespace. To accomplish this, we have to make the package more dynamic
 
 ### Go Templates
 
-By renaming `deployment.yaml` to `deployment.yaml.gotmpl`, we can enable \
-[Go template](https://pkg.go.dev/text/template) support. Files suffixed with \
-`.gotmpl` will be processed by the Go template engine before the YAML manifests \
+By renaming `deployment.yaml` to `deployment.yaml.gotmpl`, we can enable
+[Go template](https://pkg.go.dev/text/template) support. Files suffixed with 
+`.gotmpl` will be processed by the Go template engine before the YAML manifests 
 are parsed.
 
 [TemplateContext](/docs/getting_started/api-reference/#templatecontext) is \
@@ -295,7 +295,7 @@ the config to be specified in the package manifest as an
 recommended to require values that are always needed for package
 deployment and set defaults if appropriate.
 
-To inspect the parsed hierarchy of your package when using a `config` section you
+To inspect the parsed hierarchy of your package when using a `config` section, you
 must provide a configuration file with the required values:
 
 Example `config.yaml`:
@@ -329,6 +329,7 @@ For each template test, Package Operator will auto-generate fixtures into a `.te
 folder when running `kubectl package validate` or `build` and compare the output
 of successive template operations against these fixtures.
 
+Example of a template test defined in `manifest.yaml`:
 ```yaml
 test:
   template:
@@ -342,7 +343,7 @@ test:
 
 ---
 
-Make a change to the template:
+Make a change to the deployment template:
 
 ```yaml
 #...
