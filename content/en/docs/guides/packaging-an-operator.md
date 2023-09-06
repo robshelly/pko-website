@@ -18,8 +18,7 @@ To complete this guide you will need:
 
 * A Kubernetes cluster with Package Operator installed
 * The `kubectl-package` CLI plugin
-* A container-registry to push images to\
-(optional when using tars and kind load)
+* Access to a container registry where you can push your images
 
 All files used during this guide are available in the
 [package-operator/examples](https://github.com/package-operator/examples) repository.
@@ -124,14 +123,7 @@ ClusterPackage /name
 And finally to build your package as a container image use:
 
 ```sh
-# -o will directly output a `podman/docker load` compatible tar.gz
-# of your container image.
-# Use this flag if you don't want to push images to a container registry.
-$ kubectl package build -t <your-image-url-goes-here> -o example-operator.tar.gz 2_operators/1_start
-# example: load image into kind nodes:
-$ kind load image-archive example-operator.tar.gz
-
-# Alternatively push images directly to a registry.
+# Push images directly to a registry.
 # Assumes you are already logged into a registry via `podman/docker login`
 $ kubectl package build -t <your-image-url-goes-here> --push 2_operators/1_start
 ```

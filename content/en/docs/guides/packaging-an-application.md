@@ -19,8 +19,7 @@ To complete this guide you will need:
 
 * A Kubernetes cluster with Package Operator installed
 * The `kubectl-package` CLI plugin
-* A container-registry to push images to\
-(optional when using tars and kind load)
+* Access to a container registry where you can push your images
 
 All files used during this guide are available in the
 [package-operator/examples](https://github.com/package-operator/examples) repository.
@@ -150,60 +149,20 @@ Package namespace/name
 ```
 
 ---
-Finally, to build your package as a container image use one of the following methods:
-
-**Method 1:**
-
-1. Utilize the `-o` flag to directly generate a tar.gz file
-compatible with podman/docker load.
-This option is suitable if you do not intend to push images to a container registry:
-
-    ```sh
-    kubectl package build -t <your-image-url-goes-here> -o <output-file-name>.tar.gz <path-to-package-contents>
-    ```
-
-    \
-    Example:
-
-    ```sh
-    kubectl package build -t nginx:local -o nginx.tar.gz 1_applications/1_start
-    ```
-
-\
-2. Load the image into kind or minikube nodes.
-
-* For kind nodes use:
-
-    ```sh
-    kind load image-archive nginx.tar.gz
-    ```
-
-* For minikube nodes, use:
-
-    ```sh
-    minikube image load nginx.tar.gz
-    ```
-
-    {{< alert text=`When loading the image to a local registry
-    using 'minikube image load' or 'kind load', specify a tag
-    other than 'latest', otherwise Package Operator will not be
-    able to load it.` />}}
-
-**Method 2:**
-
-1. To directly push images to a registry, assuming you've already
+Finally, build your package as a container image and push the image to a registry.
+To directly push images to a registry, assuming you've already
 logged in using podman/docker login, use the following command:
 
-    ```sh
-    kubectl package build -t <your-image-url-goes-here> --push <path-to-package-contents>
-    ```
+```sh
+kubectl package build -t <your-image-url-goes-here> --push <path-to-package-contents>
+```
 
-    \
-   Example:
+\
+Example:
 
-    ```sh
-    kubectl package build -t quay.io/myquayusername/nginx --push 1_applications/1_start
-    ```
+```sh
+kubectl package build -t quay.io/myquayusername/nginx --push 1_applications/1_start
+```
 
 ### Deploy
 
@@ -219,7 +178,7 @@ a config section within the spec. If a config entry has a default specified in \
 the package manifest it may be overridden here. If the package requires values \
 that are not defaulted and missing here, the package installation will fail.
 
-Example Package-object template:
+Example Package object template:
 
 ```yaml
 apiVersion: package-operator.run/v1alpha1
