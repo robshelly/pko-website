@@ -104,7 +104,7 @@ spec:
 
 ### Assigning objects to phases
 
-Package Operators need to know in which phase objects belong.\
+Package Operator needs to know in which phase objects belong.\
 To assign an object to a phase, simply add an annotation:
 
 ```yaml
