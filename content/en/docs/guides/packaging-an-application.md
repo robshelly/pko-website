@@ -389,7 +389,7 @@ the new build tag.
 The deployment's name now utilizes the name of the Package object, making it safe
 to create multiple instances of the same package.
 
-1. Modify the `name` in `1_applications/package.yaml` file and redploy your package:
+1. Modify the `name` in `1_applications/package.yaml` file and redeploy your package:
 
    * Change the Package name in the YAML file:
 
