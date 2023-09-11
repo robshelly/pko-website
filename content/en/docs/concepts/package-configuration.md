@@ -33,9 +33,9 @@ replace with values from the configuration context.
 specifies the structure of the configuration parameters that you
 can customize when deploying a package. It provides information
 about properties, data types, default values, and required or optional settings.
-1. **Configuration Context**: During deployment, the configuration 
-context is the set of values and information used to replace 
-placeholders in templates. It includes details about the package, images, 
+1. **Configuration Context**: During deployment, the configuration
+context is the set of values and information used to replace
+placeholders in templates. It includes details about the package, images,
 configuration settings, and the environment.
 The configuration context contains the values that apply to a
 particular deployment, so you can tailor the package to fit your needs.
