@@ -6,59 +6,69 @@ weight: 500
 toc: true
 ---
 
-In the context of the Package Operator, package configuration enables you to customize your resource deployments using templates.
-This documentation will introduce you to the core concepts of package 
-configuration, how it works, and how you can use it to streamline your application deployments.
+In the context of the Package Operator, package configuration
+enables you to customize your resource deployments using templates.
+This documentation will introduce you to the core concepts of
+package configuration, how it works, and how you can use it to
+streamline your application deployments.
 
 ## Understanding Package Configuration
-You can think of package configuration as a set of customizable knobs 
-and switches that you can turn to adjust how your application or 
-operator gets deployed. Using these knobs, you can adjust the 
-deployment to your needs without changing the actual code. Package 
-configuration includes defining how you create and customize 
-resources using templates. 
-Templates are files with placeholders that get replaced with actual 
-values during the deployment process. Usually, you set these values 
-using a configuration context.
+
+You can think of package configuration as a set of customizable
+knobs and switches that you can turn to adjust how your
+application or operator gets deployed. Using these knobs, you can
+adjust the deployment to your needs without changing the actual
+code. Package configuration includes defining how you create and
+customize resources using templates.
+
+Templates are files with placeholders that get replaced with
+actual values during the deployment process. Usually, you set
+these values using a configuration context.
 
 The main components involved in package configuration are:
-1. **Templates**: These files have placeholders that you will replace with values from the configuration context.
-1. **Configuration Definition**: The configuration definition 
-specifies the structure of the configuration parameters that you can 
-customize when deploying a package. It provides information about properties, data types, default values, and required or optional settings. 
 
-1. **Configuration Context**: During deployment, the configuration context is the set of values and information used to replace 
-placeholders in templates. It includes details about the package, 
-images, configuration settings, and the environment. The 
-configuration context contains the values that apply to a 
+1. **Templates**: These files have placeholders that you will
+replace with values from the configuration context.
+1. **Configuration Definition**: The configuration definition
+specifies the structure of the configuration parameters that you
+can customize when deploying a package. It provides information
+about properties, data types, default values, and required or optional settings.
+1. **Configuration Context**: During deployment, the configuration 
+context is the set of values and information used to replace 
+placeholders in templates. It includes details about the package, images, 
+configuration settings, and the environment.
+The configuration context contains the values that apply to a
 particular deployment, so you can tailor the package to fit your needs.
 
 ## Benefits of Package Configuration
-Package configuration offers several advantages when deploying applications or operators using the Package Operator:
 
-* Simplified deployment: Package configuration streamlines the 
-deployment process by allowing you to define customizable values 
+Package configuration offers several advantages when deploying applications or operators
+using the Package Operator:
+
+* **Simplified deployment:** Package configuration streamlines the
+deployment process by allowing you to define customizable values
 without modifying the underlying resource templates.
 
-* Consistency: With package configuration, you ensure consistency 
-across deployments, as you can enforce predefined configurations for 
+* **Consistency:** With package configuration, you ensure consistency
+across deployments, as you can enforce predefined configurations for
 different environments.
 
-* Customization without code changes: Package configuration enables 
-you to tailor your deployment without altering the application or 
+* **Customization without code changes:** Package configuration enables
+you to tailor your deployment without altering the application or
 operator codebase. You can easily switch configurations for various use cases.
 
 ## Defining Package Configuration
-You have the option to include a `config` section within your packages. 
-Define this section within the package manifest using OpenAPI 
-specifications. It's good practice to define values that are 
-essential for successful package deployment as `required`, and to set 
-default values where applicable. By incorporating default values, you 
+
+You have the option to include a `config` section within your packages.
+Define this section within the package manifest using OpenAPI
+specifications. It's good practice to define values that are
+essential for successful package deployment as `required`, and to set
+default values where applicable. By incorporating default values, you
 prevent deployment failures caused by missing mandatory values.
 
-When creating your package, consider the essential configuration 
-parameters that you will need to customize. Provide default values 
-for properties that you can set up, but you can change them if you want to. 
+When creating your package, consider the essential configuration
+parameters that you will need to customize. Provide default values
+for properties that you can set up, but you can change them if you want to.
 
 Here's a simple example of specifying a configuration schema in your package `manifest.yaml`:
 
@@ -68,13 +78,13 @@ spec:
     openAPIV3Schema:
       properties:
         nginxImage:
-          description: nginxImage is the reference to the image 
-          containing nginx. 
+          description: nginxImage is the reference to the image
+          containing nginx.
           type: string
           default: "nginx:latest"
         nginxWebrootConfigmap:
-          description: nginxWebrootConfigmap is the name of an 
-          already existing configmap in the package namespace that 
+          description: nginxWebrootConfigmap is the name of an
+          already existing configmap in the package namespace that
           will be mounted into the nginx containers as webroot folder.
           type: string
       required:
@@ -82,7 +92,10 @@ spec:
       type: object
 ```
 
-This example sets the default `nginxImage` to `nginx:latest` and declares the key `nginxWebrootConfigmap` as required.
+This example sets the default `nginxImage` to `nginx:latest` and declares the key
+`nginxWebrootConfigmap` as required.
+
+---
 
 Next, you add the following to the template section of your `deployment.yaml.gotmpl`:
 
@@ -106,6 +119,8 @@ template:
           configMap:
             name: nginx-webroot
 ```
+
+---
 
 Finally, you configure the example `package.yaml` as follows and deploy it:
 
@@ -132,13 +147,18 @@ spec:
     nginxWebrootConfigmap: nginx-webroot
 ```
 
+---
+
 Verify the configuration by running `curl` on the deployment pod.
 
    Example:
+
    ```bash
    kubectl exec -i nginx-webroot-59cb6c745d-5f2b8 -- curl -s localhost
    ```
+
    Example Output:
+
    ```bash
    <html>
      <body>
@@ -147,11 +167,13 @@ Verify the configuration by running `curl` on the deployment pod.
    ```
 
 ## Examples
+
 Let’s examine a couple more examples to illustrate how package configuration works.
 
 ### Example 1: Customizing Image Versions
-Suppose you have multiple applications with different frontend and 
-backend images and ports. You want users to easily customize the 
+
+Suppose you have multiple applications with different frontend and
+backend images and ports. You want users to easily customize the
 images and ports based on the application. Here's a step-by-step process:
 
 1. **Create a PackageManifest** \
@@ -182,7 +204,7 @@ Define the scope and phases of your package in your `manifest.yaml`:
    ```
 
 1. **Define Package Configuration** \
-Under the `config` section, add the configuration schema for your 
+Under the `config` section, add the configuration schema for your
 package to your `manifest.yaml`. Allow users define image and port versions.
 
    ```yaml
@@ -206,7 +228,7 @@ package to your `manifest.yaml`. Allow users define image and port versions.
      type: object
    ```
 
-1. **Add the following to the template section of your `deployment.yaml.gotmpl`:** 
+1. **Add the following to the template section of your `deployment.yaml.gotmpl`:**
 
    ```yaml
     template:
@@ -237,8 +259,10 @@ package to your `manifest.yaml`. Allow users define image and port versions.
    kubectl package build -t <your-image-url-goes-here> --push <your-template-directory>
    ```
 
-1. **Apply Custom Configuration**\
-In your Package resource, users can add values for the configured properties. For example:
+1. **Apply Custom Configuration**
+
+   In your Package resource, users can add values for the configured properties.
+   For example:
 
    ```yaml
    apiVersion: package-operator.run/v1alpha1
@@ -265,21 +289,24 @@ In your Package resource, users can add values for the configured properties. Fo
 
    ```yaml
     kubectl get packages
-   ``` 
+   ```
 
-### Example 2: Using Package Configuration in a Deployment Template with a ClusterObjectTemplate.
-Imagine you are an engineer responsible for managing deployments in a 
-Kubernetes cluster using the Package Operator. You have a package 
-application, and you want to streamline the stage and production 
+### Example 2: Using Package Configuration in a Deployment Template with a ClusterObjectTemplate
+
+Imagine you are an engineer responsible for managing deployments in a
+Kubernetes cluster using the Package Operator. You have a package
+application, and you want to streamline the stage and production
 deployment process by using Package Configuration and ClusterObjectTemplates.
 
 **Application Configuration**
 
-- You have built your package application as a container image and 
-pushed it to a registry such as `quay.io/yourusername/frontend-deployment:v1`. 
-- Your deployment template (`deployment.yaml.gotmpl`) consists of Package Configuration for app name, image, and namespace.
+* You have built your package application as a container image and
+pushed it to a registry such as `quay.io/yourusername/frontend-deployment:v1`.
+* Your deployment template (`deployment.yaml.gotmpl`) consists of Package Configuration
+for app name, image, and namespace.
 
 Example `deployment.yaml.gotmpl`:
+
 ```yaml
    apiVersion: apps/v1
    kind: Deployment
@@ -305,7 +332,9 @@ Example `deployment.yaml.gotmpl`:
          - name: "{{ .config.app }}"
            image: "{{ .config.image }}"
 ```
+
 Example `manifest.yaml`:
+
 ```yaml
    apiVersion: manifests.package-operator.run/v1alpha1
    kind: PackageManifest
@@ -363,18 +392,20 @@ Example `manifest.yaml`:
      image: quay.io/yourusername/wizard:stable
      app: wizard
    ```
+
 1. **Apply the ConfigMap to your cluster:**
+
    ```bash
    kubectl apply -f configmap.yaml
    ```
 
 1. **Create a ClusterObjectTemplate:**
 
-   Create a ClusterObjectTemplate that references the ConfigMap and 
-   uses it to template the PackageManifest. 
+   Create a ClusterObjectTemplate that references the ConfigMap and
+   uses it to template the PackageManifest.
 
-   The ClusterObjectTemplate will create Package objects based on the 
-   configuration provided in the ConfigMap. 
+   The ClusterObjectTemplate will create Package objects based on the
+   configuration provided in the ConfigMap.
    Use the following YAML and apply it:
 
    ```yaml
@@ -407,13 +438,17 @@ Example `manifest.yaml`:
          image: "quay.io/yourusername/frontend-deployment:v1"
          config: {{toJson .config}}
    ```
-1. **Apply the ClusterObjectTemplate:** 
 
-   Apply the ClusterObjectTemplate using the `kubectl apply -f clusterobjecttemplate.yaml` command.
-   
-   Use the `kubectl describe clusterobjecttemplates <your-template-name>` command to verify the ClusterObjectTemplate status.
+1. **Apply the ClusterObjectTemplate:**
+
+   Apply the ClusterObjectTemplate using the `kubectl apply -f clusterobjecttemplate.yaml`
+   command.
+
+   Use the `kubectl describe clusterobjecttemplates <your-template-name>` command
+   to verify the ClusterObjectTemplate status.
 
    Example:
+
    ```bash
    kubectl describe clusterobjecttemplates cool-new-app-template
    ... snipped for readability
@@ -429,20 +464,21 @@ Example `manifest.yaml`:
 
 1. **Create Packages Based on ClusterObjectTemplate:**
 
-   When the ClusterObjectTemplate is applied, it creates Package 
-   objects based on the initial configuration from the ConfigMap. 
-   
+   When the ClusterObjectTemplate is applied, it creates Package
+   objects based on the initial configuration from the ConfigMap.
+
    These Package objects represent your deployments.
-   You can view the created Package objects using `kubectl get packages -A` and `kubectl get deployments -A` to view the 
-   corresponding deployments.
+   You can view the created Package objects using `kubectl get packages -A`
+   and `kubectl get deployments -A` to view the corresponding deployments.
 
    Example:
+
    ```bash
    kubectl get packages -A
    NAMESPACE              NAME            STATUS      AGE
    production-namespace   wizard          Available   3m21s
-   ``` 
-  
+   ```
+
    ```bash
    kubectl get deployments -n production-namespace
    NAME                READY   UP-TO-DATE   AVAILABLE   AGE
@@ -451,10 +487,11 @@ Example `manifest.yaml`:
 
 1. **Update the Application Configuration:**
 
-   Update the configuration of your application, modify the data in the 
+   Update the configuration of your application and modify the data in the
   `myapp-config` ConfigMap.
 
    Example:
+
    ```yaml
    apiVersion: v1
    kind: ConfigMap
@@ -471,10 +508,11 @@ Example `manifest.yaml`:
 
    Apply the ConfigMap by issuing:
    `kubectl apply -f configmap.yaml`.
-   
+
    The package status will change status to **Progressing** and then **Available**:
 
    Example:
+
      ```bash
      kubectl get packages -A
      NAMESPACE              NAME            STATUS        AGE
@@ -490,8 +528,9 @@ Example `manifest.yaml`:
 1. **Verify the deployment:**
 
    Verify the deployment is using the updated image:
+
    ```bash
-   kubectl describe deployment wizard-deployment -n production-namespace 
+   kubectl describe deployment wizard-deployment -n production-namespace
    ...
    Pod Template:
      Labels:  app.kubernetes.io/name=wizard
@@ -507,9 +546,11 @@ Example `manifest.yaml`:
 
 1. **Update the ConfigMap for Stage Deployment:**
 
-   To create a deployment for stage, update the ConfigMap with the details of the stage deployment.
+   To create a deployment for stage, update the ConfigMap with the details
+   of the stage deployment.
 
    Example:
+
    ```yaml
    apiVersion: v1
    kind: ConfigMap
@@ -525,13 +566,16 @@ Example `manifest.yaml`:
 1. **Apply the ConfigMap to your cluster:**
 
    Apply the ConfigMap to your cluster, by issuing:
+
    ```bash
    kubectl apply -f configmap.yaml
    ```
-   When you apply the ConfigMap, the wizard package is created in the staging-namespace, along with the deployments.
+
+   When you apply the ConfigMap, the wizard package is created in the
+   staging-namespace, along with the deployments.
 
 1. **Verify the Package object creation and deployments:**
-  
+
    ```bash
    kubectl get packages -A
    NAMESPACE              NAME            STATUS      AGE
@@ -546,20 +590,27 @@ Example `manifest.yaml`:
 
    ```
 
-These steps guided you through deploying and updating your application using Package Configuration and ClusterObjectTemplates with the Package Operator.
+These steps guided you through deploying and updating your application using package
+configuration and ClusterObjectTemplates with the Package Operator.
 
 ## Error Messages and Troubleshooting
-During the package configuration process, you may encounter common 
-errors such as missing or incorrectly formatted values. Here are some 
+
+During the package configuration process, you may encounter common
+errors such as missing or incorrectly formatted values. Here are some
 troubleshooting tips:
 
-- **Check Property Names:** Ensure that property names in your configuration match those defined in the package manifest's configuration schema.
-- **Data Type Mismatch:** Verify that the data types of configured values match the expected types in the schema.
-- **Test Framework:** Use the Package Operator [test framework](https://package-operator.run/docs/guides/packaging-an-application/#testing-templates) to test your templates.
-- **Review Logs:** Review the Package Operator manager logs using the `kubectl logs -f package-operator-manager<pod> -n package-operator-system` command. 
+* **Check Property Names:** Ensure that property names in your configuration
+match those defined in the package manifest's configuration schema.
+* **Data Type Mismatch:** Verify that the data types of configured values match
+the expected types in the schema.
+* **Test Framework:** Use the Package Operator [test framework](https://package-operator.run/docs/guides/packaging-an-application/#testing-templates)
+to test your templates.
+* **Review Logs:** Review the Package Operator manager logs using
+the `kubectl logs -f package-operator-manager<pod> -n package-operator-system` command.
 
 ## Conclusion
-These examples illustrate how you can leverage Package Configuration to provide a streamlined and customized way to deploy applications in
-Kubernetes using the Package Operator. The power of package
-configuration lies in its ability to abstract and parameterize
-values in your resources, making deployments flexible and adaptable.
+
+These examples illustrate how you can leverage package configuration to provide a
+streamlined and customized way to deploy applications in Kubernetes using the Package
+Operator. The power of package configuration lies in its ability to abstract
+and parameterize values in your resources, making deployments flexible and adaptable.
