@@ -21,10 +21,6 @@ adjust the deployment to your needs without changing the actual
 code. Package configuration includes defining how you create and
 customize resources using templates.
 
-Templates are files with placeholders that get replaced with
-actual values during the deployment process. Usually, you set
-these values using a configuration context.
-
 The main components involved in package configuration are:
 
 1. **Templates**: These files have placeholders that you will
@@ -66,6 +62,14 @@ essential for successful package deployment as `required`, and to set
 default values where applicable. By incorporating default values, you
 prevent deployment failures caused by missing mandatory values.
 
+**NOTE:** These two solutions are mutually
+exclusive. You can either mark a property as
+`required` to enforce the necessity of providing
+a value, thereby preventing failure, or assign a
+default value to ensure success even
+when no value is provided. It's important not to
+use both approaches for the same property.
+
 When creating your package, consider the essential configuration
 parameters that you will need to customize. Provide default values
 for properties that you can set up, but you can change them if you want to.
@@ -104,11 +108,11 @@ template:
     metadata:
       labels:
         app.kubernetes.io/name: nginx
-        app.kubernetes.io/instance: "{{.package.metadata.name}}"
+        app.kubernetes.io/instance: "{{ .package.metadata.name }}"
     spec:
       containers:
         - name: nginx
-          image: "{{.config.nginxImage}}"
+          image: "{{ .config.nginxImage }}"
           ports:
             - containerPort: 80
           volumeMounts:
@@ -149,12 +153,12 @@ spec:
 
 ---
 
-Verify the configuration by running `curl` on the deployment pod.
+Verify the configuration by running `curl` on the deployment.
 
    Example:
 
    ```bash
-   kubectl exec -i nginx-webroot-59cb6c745d-5f2b8 -- curl -s localhost
+    kubectl exec deploy/nginx-webroot  -- curl -s localhost
    ```
 
    Example Output:
@@ -235,18 +239,18 @@ package to your `manifest.yaml`. Allow users define image and port versions.
       metadata:
         labels:
           app.kubernetes.io/name: frontend-backend
-          app.kubernetes.io/instance: "{{.package.metadata.name}}"
+          app.kubernetes.io/instance: "{{ .package.metadata.name }}"
       spec:
         containers:
           - name: frontend
-            image: "{{.config.frontendImage}}"
+            image: "{{ .config.frontendImage }}"
             ports:
-              - containerPort: {{.config.frontendPort}}
+              - containerPort: {{ .config.frontendPort }}
 
           - name: database
-            image: "{{.config.databaseImage}}"
+            image: "{{ .config.databaseImage }}"
             ports:
-              - containerPort: {{.config.databasePort}}
+              - containerPort: {{ .config.databasePort }}
    ```
 
 1. **Build and push your package to your image repository:**
@@ -256,7 +260,7 @@ package to your `manifest.yaml`. Allow users define image and port versions.
    ```
 
    ```yaml
-   kubectl package build -t <your-image-url-goes-here> --push <your-template-directory>
+   kubectl package build -t <your-image-reference-goes-here> --push <your-template-directory>
    ```
 
 1. **Apply Custom Configuration**
@@ -296,7 +300,7 @@ package to your `manifest.yaml`. Allow users define image and port versions.
 Imagine you are an engineer responsible for managing deployments in a
 Kubernetes cluster using the Package Operator. You have a package
 application, and you want to streamline the stage and production
-deployment process by using Package Configuration and ClusterObjectTemplates.
+deployment process by using package configuration and [ClusterObjectTemplates](https://package-operator.run/docs/getting_started/api-reference/#clusterobjecttemplate).
 
 **Application Configuration**
 
@@ -404,8 +408,6 @@ Example `manifest.yaml`:
    Create a ClusterObjectTemplate that references the ConfigMap and
    uses it to template the PackageManifest.
 
-   The ClusterObjectTemplate will create Package objects based on the
-   configuration provided in the ConfigMap.
    Use the following YAML and apply it:
 
    ```yaml
@@ -432,8 +434,8 @@ Example `manifest.yaml`:
        apiVersion: package-operator.run/v1alpha1
        kind: Package
        metadata:
-         name: "{{.config.name}}"
-         namespace: "{{.config.namespace}}"
+         name: "{{ .config.name }}"
+         namespace: "{{ .config.namespace }}"
        spec:
          image: "quay.io/yourusername/frontend-deployment:v1"
          config: {{toJson .config}}
