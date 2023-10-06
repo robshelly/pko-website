@@ -71,3 +71,16 @@ probes:
     type: Established
     status: "True"
 ```
+
+### OpenShift Route
+
+```yaml
+selector:
+  kind:
+    group: route.openshift.io
+    kind: Route
+probes:
+- cel:
+    message: not all ingress points are reporting ready
+    rule: self.status.ingress.all(i, i.conditions.all(c, c.type == "Ready" && c.status == "True"))
+```
