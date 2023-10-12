@@ -4,6 +4,7 @@
     "no-empty-source": null,
     "string-quotes": "double",
     "scss/comment-no-empty": null,
+    "scss/double-slash-comment-empty-line-before": null,
     "max-line-length": null,
     "scss/at-extend-no-missing-placeholder": null,
     "scss/dollar-variable-colon-space-after": null,
