@@ -42,7 +42,7 @@ The `include` function executes a pre-defined template and returns it as string,
 ## Dictionaries
 
 Sprig provides a key/value storage type called a `dict` (short for "dictionary",
-as in Python). A `dict` is an _unorder_ type.
+as in Python). A `dict` is an _unordered_ type.
 
 The key to a dictionary **must be a string**. However, the value can be any
 type, even another `dict` or `list`.
