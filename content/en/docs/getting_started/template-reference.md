@@ -1774,7 +1774,7 @@ To check whether a path is absolute, use `isAbs`.
 
 ### `getFile`
 
-Access another file in the package. The files contents will be available as string and can be piped to other functions.
+Access another file in the package. The file's content will be available as string and can be piped to other functions.
 
 ```
 {{ getFile "_stuff.txt" }}
