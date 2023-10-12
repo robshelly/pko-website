@@ -37,6 +37,8 @@ module.exports = {
           './assets/scss/common/_dark.scss',
           './node_modules/bootstrap/scss/_dropdown.scss',
           './node_modules/katex/dist/katex.css',
+          './node_modules/highlight.js/scss/stackoverflow-light.scss',
+          './node_modules/highlight.js/scss/stackoverflow-dark.scss',
         ]),
       ],
     }),
