@@ -131,7 +131,7 @@ pluck "name1" $myDict $myOtherDict
 
 The above will return a `list` containing every found value (`[value1 otherValue1]`).
 
-If the give key is _not found_ in a map, that map will not have an item in the
+If the given key is _not found_ in a map, that map will not have an item in the
 list (and the length of the returned list will be less than the number of dicts
 in the call to `pluck`.
 
