@@ -216,6 +216,12 @@ body {
   text-decoration: none;
 }
 
+#TableOfContents li a {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 #TableOfContents ul,
 #toc ul {
   padding-left: 0;
