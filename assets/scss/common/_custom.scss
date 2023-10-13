@@ -5,13 +5,13 @@ div.package-operator-logo {
   margin: 0 auto;
 
   &::before {
-    content: url(/package-operator.svg);
+    content: url("/package-operator.svg");
   }
 }
 
 [data-dark-mode] div.package-operator-logo {
   &::before {
-    content: url(/package-operator-dark.svg);
+    content: url("/package-operator-dark.svg");
   }
 }
 
