@@ -7,5 +7,5 @@ var config = {
 
 document.addEventListener('DOMContentLoaded', () => {
   mermaid.initialize(config);
-  mermaid.init(undefined, '.language-mermaid');
+  mermaid.init(config, '.language-mermaid');
 });
