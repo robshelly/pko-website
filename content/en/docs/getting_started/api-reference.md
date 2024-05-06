@@ -38,7 +38,7 @@ _Taken from the [Kubernetes API versioning documentation](https://kubernetes.io/
 
 ## package-operator.run/v1alpha1
 
-The package v1alpha1 contains API Schema definitions for the v1alpha1 version of the core Package Operator API group,
+Package v1alpha1 contains API Schema definitions for the v1alpha1 version of the core Package Operator API group,
 containing basic building blocks that other auxiliary APIs can build on top of.
 
 * [ClusterObjectDeployment](#clusterobjectdeployment)
@@ -94,7 +94,8 @@ spec:
       phases:
       - class: ipsum
         externalObjects:
-        - conditionMappings:
+        - collisionProtection: Prevent
+          conditionMappings:
           - destinationType: consetetur
             sourceType: amet
           object:
@@ -104,7 +105,8 @@ spec:
               name: example-deployment
         name: lorem
         objects:
-        - conditionMappings:
+        - collisionProtection: Prevent
+          conditionMappings:
           - destinationType: sit
             sourceType: dolor
           object:
@@ -132,8 +134,9 @@ status:
 
 ClusterObjectSet reconciles a collection of objects through ordered phases and aggregates their status.
 
-ClusterObjectSets behave similarly to Kubernetes ReplicaSets, by managing a collection of objects and being itself mostly immutable.
-This object type is able to suspend/pause reconciliation of specific objects to facilitate the transition between revisions.
+ClusterObjectSets behave similarly to Kubernetes ReplicaSets, by managing a collection of objects and
+being itself mostly immutable. This object type is able to suspend/pause reconciliation of specific
+objects to facilitate the transition between revisions.
 
 Archived ClusterObjectSets may stay on the cluster, to store information about previous revisions.
 
@@ -170,7 +173,8 @@ spec:
   phases:
   - class: sed
     externalObjects:
-    - conditionMappings:
+    - collisionProtection: Prevent
+      conditionMappings:
       - destinationType: tempor
         sourceType: eirmod
       object:
@@ -180,7 +184,8 @@ spec:
           name: example-deployment
     name: elitr
     objects:
-    - conditionMappings:
+    - collisionProtection: Prevent
+      conditionMappings:
       - destinationType: nonumy
         sourceType: diam
       object:
@@ -208,8 +213,9 @@ status:
 
 ### ClusterObjectSetPhase
 
-ClusterObjectSetPhase is an internal API, allowing a ClusterObjectSet to delegate a single phase to another custom controller.
-ClusterObjectSets will create subordinate ClusterObjectSetPhases when `.class` is set within the phase specification.
+ClusterObjectSetPhase is an internal API, allowing a ClusterObjectSet to delegate a
+single phase to another custom controller. ClusterObjectSets will create subordinate
+ClusterObjectSetPhases when `.class` is set within the phase specification.
 
 
 **Example**
@@ -239,7 +245,8 @@ spec:
         matchLabels:
           app.kubernetes.io/name: example-operator
   externalObjects:
-  - conditionMappings:
+  - collisionProtection: Prevent
+    conditionMappings:
     - destinationType: amet
       sourceType: sit
     object:
@@ -248,7 +255,8 @@ spec:
       metadata:
         name: example-deployment
   objects:
-  - conditionMappings:
+  - collisionProtection: Prevent
+    conditionMappings:
     - destinationType: dolor
       sourceType: ipsum
     object:
@@ -282,7 +290,7 @@ status:
 
 ### ClusterObjectSlice
 
-ClusterObjectSlices are referenced by ObjectSets or ObjectDeployments and contain objects to
+ClusterObjectSlice is referenced by ObjectSets or ObjectDeployments and contain objects to
 limit the size of ObjectSet and ObjectDeployments when big packages are installed.
 This is necessary to work around the etcd object size limit of ~1.5MiB and to reduce load on the kube-apiserver.
 
@@ -295,7 +303,8 @@ kind: ClusterObjectSlice
 metadata:
   name: example
 objects:
-- conditionMappings:
+- collisionProtection: Prevent
+  conditionMappings:
   - destinationType: nonumy
     sourceType: diam
   object:
@@ -355,7 +364,7 @@ status:
 
 ### ClusterPackage
 
-
+ClusterPackage defines a cluster scoped package installation.
 
 
 **Example**
@@ -378,7 +387,7 @@ status:
 | Field | Description |
 | ----- | ----------- |
 | `metadata` <br>metav1.ObjectMeta |  |
-| `spec` <br><a href="#packagespec">PackageSpec</a> | Package specification. |
+| `spec` <br><a href="#packagespec">PackageSpec</a> | PackageSpec specifies a package. |
 | `status` <br><a href="#packagestatus">PackageStatus</a> | PackageStatus defines the observed state of a Package. |
 
 
@@ -422,7 +431,8 @@ spec:
       phases:
       - class: sed
         externalObjects:
-        - conditionMappings:
+        - collisionProtection: Prevent
+          conditionMappings:
           - destinationType: tempor
             sourceType: eirmod
           object:
@@ -432,7 +442,8 @@ spec:
               name: example-deployment
         name: elitr
         objects:
-        - conditionMappings:
+        - collisionProtection: Prevent
+          conditionMappings:
           - destinationType: nonumy
             sourceType: diam
           object:
@@ -460,8 +471,9 @@ status:
 
 ObjectSet reconciles a collection of objects through ordered phases and aggregates their status.
 
-ObjectSets behave similarly to Kubernetes ReplicaSets, by managing a collection of objects and being itself mostly immutable.
-This object type is able to suspend/pause reconciliation of specific objects to facilitate the transition between revisions.
+ObjectSets behave similarly to Kubernetes ReplicaSets, by managing a collection of objects and
+being itself mostly immutable. This object type is able to suspend/pause reconciliation of
+specific objects to facilitate the transition between revisions.
 
 Archived ObjectSets may stay on the cluster, to store information about previous revisions.
 
@@ -499,7 +511,8 @@ spec:
   phases:
   - class: dolor
     externalObjects:
-    - conditionMappings:
+    - collisionProtection: Prevent
+      conditionMappings:
       - destinationType: sadipscing
         sourceType: consetetur
       object:
@@ -509,7 +522,8 @@ spec:
           name: example-deployment
     name: ipsum
     objects:
-    - conditionMappings:
+    - collisionProtection: Prevent
+      conditionMappings:
       - destinationType: amet
         sourceType: sit
       object:
@@ -569,7 +583,8 @@ spec:
         matchLabels:
           app.kubernetes.io/name: example-operator
   externalObjects:
-  - conditionMappings:
+  - collisionProtection: Prevent
+    conditionMappings:
     - destinationType: eirmod
       sourceType: nonumy
     object:
@@ -578,7 +593,8 @@ spec:
       metadata:
         name: example-deployment
   objects:
-  - conditionMappings:
+  - collisionProtection: Prevent
+    conditionMappings:
     - destinationType: diam
       sourceType: sed
     object:
@@ -612,7 +628,7 @@ status:
 
 ### ObjectSlice
 
-ObjectSlices are referenced by ObjectSets or ObjectDeployments and contain objects to
+ObjectSlice is referenced by ObjectSets or ObjectDeployments and contain objects to
 limit the size of ObjectSets and ObjectDeployments when big packages are installed.
 This is necessary to work around the etcd object size limit of ~1.5MiB and to reduce load on the kube-apiserver.
 
@@ -626,7 +642,8 @@ metadata:
   name: example
   namespace: default
 objects:
-- conditionMappings:
+- collisionProtection: Prevent
+  conditionMappings:
   - destinationType: amet
     sourceType: sit
   object:
@@ -646,7 +663,7 @@ objects:
 
 ### ObjectTemplate
 
-ObjectTemplates contain a go template of a Kubernetes manifest. This manifest is then templated with the
+ObjectTemplate contain a go template of a Kubernetes manifest. This manifest is then templated with the
 sources provided in the .Spec.Sources. The sources can only come from objects within the same nampespace
 as the ObjectTemplate.
 
@@ -687,7 +704,7 @@ status:
 
 ### Package
 
-
+Package defines a namespaced package installationn.
 
 
 **Example**
@@ -711,7 +728,7 @@ status:
 | Field | Description |
 | ----- | ----------- |
 | `metadata` <br>metav1.ObjectMeta |  |
-| `spec` <br><a href="#packagespec">PackageSpec</a> | Package specification. |
+| `spec` <br><a href="#packagespec">PackageSpec</a> | PackageSpec specifies a package. |
 | `status` <br><a href="#packagestatus">PackageStatus</a> | PackageStatus defines the observed state of a Package. |
 
 
@@ -819,7 +836,7 @@ Used in:
 
 ### ConditionMapping
 
-
+ConditionMapping maps one condition type to another.
 
 | Field | Description |
 | ----- | ----------- |
@@ -833,7 +850,7 @@ Used in:
 
 ### ControlledObjectReference
 
-References an object controlled by this ObjectSet/ObjectSetPhase.
+ControlledObjectReference an object controlled by this ObjectSet/ObjectSetPhase.
 
 | Field | Description |
 | ----- | ----------- |
@@ -884,11 +901,12 @@ Used in:
 
 ### ObjectSetObject
 
-An object that is part of the phase of an ObjectSet.
+ObjectSetObject is an object that is part of the phase of an ObjectSet.
 
 | Field | Description |
 | ----- | ----------- |
 | `object` <b>required</b><br>unstructured.Unstructured |  |
+| `collisionProtection` <br><a href="#collisionprotection">CollisionProtection</a> | Collision protection prevents Package Operator from working on objects already under<br>management by a different operator. |
 | `conditionMappings` <br><a href="#conditionmapping">[]ConditionMapping</a> | Maps conditions from this object into the Package Operator APIs. |
 
 
@@ -1004,12 +1022,12 @@ Used in:
 
 ### ObjectSetTemplatePhase
 
-ObjectSet reconcile phase.
+ObjectSetTemplatePhase configures the reconcile phase of ObjectSets.
 
 | Field | Description |
 | ----- | ----------- |
 | `name` <b>required</b><br>string | Name of the reconcile phase. Must be unique within a ObjectSet. |
-| `class` <br>string | If non empty, the ObjectSet controller will delegate phase reconciliation to another controller, by creating an ObjectSetPhase object.<br>If set to the string "default" the built-in Package Operator ObjectSetPhase controller will reconcile the object in the same way the ObjectSet would.<br>If set to any other string, an out-of-tree controller needs to be present to handle ObjectSetPhase objects. |
+| `class` <br>string | If non empty, the ObjectSet controller will delegate phase reconciliation<br>to another controller, by creating an ObjectSetPhase object. If set to the<br>string "default" the built-in Package Operator ObjectSetPhase controller<br>will reconcile the object in the same way the ObjectSet would. If set to<br>any other string, an out-of-tree controller needs to be present to handle<br>ObjectSetPhase objects. |
 | `objects` <br><a href="#objectsetobject">[]ObjectSetObject</a> | Objects belonging to this phase. |
 | `externalObjects` <br><a href="#objectsetobject">[]ObjectSetObject</a> | ExternalObjects observed, but not reconciled by this phase. |
 | `slices` <br>[]string | References to ObjectSlices containing objects for this phase. |
@@ -1023,7 +1041,9 @@ Used in:
 
 ### ObjectSetTemplateSpec
 
-ObjectSet specification.
+ObjectSetTemplateSpec defines an object set.
+WARNING: when modifying fields in ObjectSetTemplateSpec
+also update validation rules in (Cluster)ObjectSetSpec.
 
 | Field | Description |
 | ----- | ----------- |
@@ -1038,7 +1058,7 @@ Used in:
 
 ### ObjectTemplateSource
 
-
+ObjectTemplateSource defines a source for a template.
 
 | Field | Description |
 | ----- | ----------- |
@@ -1056,7 +1076,7 @@ Used in:
 
 ### ObjectTemplateSourceItem
 
-
+ObjectTemplateSourceItem defines a source item for an object template.
 
 | Field | Description |
 | ----- | ----------- |
@@ -1100,7 +1120,7 @@ Used in:
 
 ### PackageProbeKindSpec
 
-Kind package probe parameters.
+PackageProbeKindSpec package probe parameters.
 selects objects based on Kind and API Group.
 
 | Field | Description |
@@ -1115,11 +1135,11 @@ Used in:
 
 ### PackageSpec
 
-Package specification.
+PackageSpec specifies a package.
 
 | Field | Description |
 | ----- | ----------- |
-| `image` <b>required</b><br>string | the image containing the contents of the package<br>this image will be unpacked by the package-loader to render the ObjectDeployment for propagating the installation of the package. |
+| `image` <b>required</b><br>string | the image containing the contents of the package<br>this image will be unpacked by the package-loader to render<br>the ObjectDeployment for propagating the installation of the package. |
 | `config` <br>runtime.RawExtension | Package configuration parameters. |
 | `component` <br>string | Desired component to deploy from multi-component packages. |
 
@@ -1148,7 +1168,7 @@ Used in:
 
 ### PreviousRevisionReference
 
-References a previous revision of an ObjectSet or ClusterObjectSet.
+PreviousRevisionReference references a previous revision of an ObjectSet or ClusterObjectSet.
 
 | Field | Description |
 | ----- | ----------- |
@@ -1164,13 +1184,13 @@ Used in:
 
 ### Probe
 
-Defines probe parameters. Only one can be filled.
+Probe defines probe parameters. Only one can be filled.
 
 | Field | Description |
 | ----- | ----------- |
-| `condition` <br><a href="#probeconditionspec">ProbeConditionSpec</a> | Checks whether or not the object reports a condition with given type and status. |
-| `fieldsEqual` <br><a href="#probefieldsequalspec">ProbeFieldsEqualSpec</a> | Compares two fields specified by JSON Paths. |
-| `cel` <br><a href="#probecelspec">ProbeCELSpec</a> | Uses Common Expression Language (CEL) to probe an object.<br>CEL rules have to evaluate to a boolean to be valid.<br>See:<br>https://kubernetes.io/docs/reference/using-api/cel<br>https://github.com/google/cel-go |
+| `condition` <br><a href="#probeconditionspec">ProbeConditionSpec</a> | ProbeConditionSpec checks whether or not the object reports a condition with given type and status. |
+| `fieldsEqual` <br><a href="#probefieldsequalspec">ProbeFieldsEqualSpec</a> | ProbeFieldsEqualSpec compares two fields specified by JSON Paths. |
+| `cel` <br><a href="#probecelspec">ProbeCELSpec</a> | ProbeCELSpec uses Common Expression Language (CEL) to probe an object.<br>CEL rules have to evaluate to a boolean to be valid.<br>See:<br>https://kubernetes.io/docs/reference/using-api/cel<br>https://github.com/google/cel-go |
 
 
 Used in:
@@ -1179,7 +1199,7 @@ Used in:
 
 ### ProbeCELSpec
 
-Uses Common Expression Language (CEL) to probe an object.
+ProbeCELSpec uses Common Expression Language (CEL) to probe an object.
 CEL rules have to evaluate to a boolean to be valid.
 See:
 https://kubernetes.io/docs/reference/using-api/cel
@@ -1197,7 +1217,7 @@ Used in:
 
 ### ProbeConditionSpec
 
-Checks whether or not the object reports a condition with given type and status.
+ProbeConditionSpec checks whether or not the object reports a condition with given type and status.
 
 | Field | Description |
 | ----- | ----------- |
@@ -1211,7 +1231,7 @@ Used in:
 
 ### ProbeFieldsEqualSpec
 
-Compares two fields specified by JSON Paths.
+ProbeFieldsEqualSpec compares two fields specified by JSON Paths.
 
 | Field | Description |
 | ----- | ----------- |
@@ -1225,7 +1245,7 @@ Used in:
 
 ### ProbeSelector
 
-Selects a subset of objects to apply probes to.
+ProbeSelector selects a subset of objects to apply probes to.
 e.g. ensures that probes defined for apps/Deployments are not checked against ConfigMaps.
 
 | Field | Description |
@@ -1240,7 +1260,7 @@ Used in:
 
 ### RemotePhaseReference
 
-References remote phases aka ObjectSetPhase/ClusterObjectSetPhase objects to which a phase is delegated.
+RemotePhaseReference remote phases aka ObjectSetPhase/ClusterObjectSetPhase objects to which a phase is delegated.
 
 | Field | Description |
 | ----- | ----------- |
@@ -1253,7 +1273,7 @@ Used in:
 * [ObjectSetStatus](#objectsetstatus)
 ## manifests.package-operator.run/v1alpha1
 
-The package v1alpha1 contains API Schema definitions for the v1alpha1 version of the manifests API group,
+Package v1alpha1 contains API Schema definitions for the v1alpha1 version of the manifests API group,
 containing file-based manifests for the packaging infrastructure.
 
 * [PackageManifest](#packagemanifest)
@@ -1262,7 +1282,7 @@ containing file-based manifests for the packaging infrastructure.
 
 ### PackageManifest
 
-
+PackageManifest defines the manifest of a package.
 
 
 **Example**
@@ -1277,6 +1297,13 @@ spec:
   availabilityProbes:
   - corev1alpha1.ObjectSetProbe
   components: PackageManifestComponentsConfig
+  conditionalFiltering:
+    conditionalPaths:
+    - expression: elitr
+      glob: sadipscing
+    namedConditions:
+    - expression: consetetur
+      name: amet
   config:
     openAPIV3Schema: apiextensionsv1.JSONSchemaProps
   images:
@@ -1288,25 +1315,40 @@ spec:
   scopes:
   - PackageManifestScope
 test:
+  kubeconform:
+    kubernetesVersion: elitr
+    schemaLocations:
+    - sed
   template:
   - context:
       config: runtime.RawExtension
       environment:
+        hyperShift:
+          hostedCluster:
+            hostedClusterNamespace: sadipscing
+            metadata:
+              annotations: map[string]string
+              labels: map[string]string
+              name: amet
+              namespace: consetetur
         kubernetes:
-          version: elitr
+          version: tempor
         openShift:
-          version: sed
+          managed:
+            data: map[string]string
+          version: lorem
         proxy:
-          httpProxy: diam
-          httpsProxy: nonumy
-          noProxy: eirmod
+          httpProxy: ipsum
+          httpsProxy: dolor
+          noProxy: sit
       package:
+        image: eirmod
         metadata:
           annotations: map[string]string
           labels: map[string]string
-          name: consetetur
-          namespace: sadipscing
-    name: amet
+          name: diam
+          namespace: nonumy
+    name: sed
 
 ```
 
@@ -1314,13 +1356,13 @@ test:
 | Field | Description |
 | ----- | ----------- |
 | `metadata` <br>metav1.ObjectMeta |  |
-| `spec` <br><a href="#packagemanifestspec">PackageManifestSpec</a> | PackageManifestSpec represents the spec of the packagemanifest containing the details about phases and availability probes. |
+| `spec` <br><a href="#packagemanifestspec">PackageManifestSpec</a> | PackageManifestSpec represents the spec of the packagemanifest containing the<br>details about phases and availability probes. |
 | `test` <br><a href="#packagemanifesttest">PackageManifestTest</a> | PackageManifestTest configures test cases. |
 
 
 ### PackageManifestLock
 
-
+PackageManifestLock allows locking packages to specific versions.
 
 
 **Example**
@@ -1333,9 +1375,9 @@ metadata:
   namespace: default
 spec:
   images:
-  - digest: ipsum
-    image: lorem
-    name: tempor
+  - digest: eirmod
+    image: nonumy
+    name: diam
 
 ```
 
@@ -1343,7 +1385,7 @@ spec:
 | Field | Description |
 | ----- | ----------- |
 | `metadata` <br>metav1.ObjectMeta |  |
-| `spec` <br><a href="#packagemanifestlockspec">PackageManifestLockSpec</a> |  |
+| `spec` <br><a href="#packagemanifestlockspec">PackageManifestLockSpec</a> | PackageManifestLockSpec defines a set of packages that are locked to a specific version. |
 
 
 
@@ -1356,18 +1398,50 @@ PackageEnvironment information.
 
 | Field | Description |
 | ----- | ----------- |
-| `kubernetes` <b>required</b><br><a href="#packageenvironmentkubernetes">PackageEnvironmentKubernetes</a> | Kubernetes environment information. |
-| `openShift` <br><a href="#packageenvironmentopenshift">PackageEnvironmentOpenShift</a> | OpenShift environment information. |
-| `proxy` <br><a href="#packageenvironmentproxy">PackageEnvironmentProxy</a> | Proxy configuration. |
+| `kubernetes` <b>required</b><br><a href="#packageenvironmentkubernetes">PackageEnvironmentKubernetes</a> | Kubernetes environment information. This section is always set. |
+| `openShift` <br><a href="#packageenvironmentopenshift">PackageEnvironmentOpenShift</a> | OpenShift environment information. This section is only set when OpenShift is detected. |
+| `proxy` <br><a href="#packageenvironmentproxy">PackageEnvironmentProxy</a> | Proxy configuration. Only available on OpenShift when the cluster-wide Proxy is enabled.<br>https://docs.openshift.com/container-platform/latest/networking/enable-cluster-wide-proxy.html |
+| `hyperShift` <br><a href="#packageenvironmenthypershift">PackageEnvironmentHyperShift</a> | HyperShift specific information. Only available when installed alongside HyperShift.<br>https://github.com/openshift/hypershift |
 
 
 Used in:
 * [TemplateContext](#templatecontext)
 
 
+### PackageEnvironmentHyperShift
+
+PackageEnvironmentHyperShift contains HyperShift specific information.
+Only available when installed alongside HyperShift.
+https://github.com/openshift/hypershift
+
+| Field | Description |
+| ----- | ----------- |
+| `hostedCluster` <b>required</b><br><a href="#packageenvironmenthypershifthostedcluster">PackageEnvironmentHyperShiftHostedCluster</a> | Contains HyperShift HostedCluster specific information.<br>This information is only available when installed alongside HyperShift within a HostedCluster Namespace.<br>https://github.com/openshift/hypershift |
+
+
+Used in:
+* [PackageEnvironment](#packageenvironment)
+
+
+### PackageEnvironmentHyperShiftHostedCluster
+
+PackageEnvironmentHyperShiftHostedCluster contains HyperShift HostedCluster specific information.
+This information is only available when installed alongside HyperShift within a HostedCluster Namespace.
+https://github.com/openshift/hypershift
+
+| Field | Description |
+| ----- | ----------- |
+| `metadata` <b>required</b><br><a href="#templatecontextobjectmeta">TemplateContextObjectMeta</a> | TemplateContextObjectMeta represents a simplified version of metav1.ObjectMeta for use in templates. |
+| `hostedClusterNamespace` <b>required</b><br>string | Namespace of HostedCluster components belonging to this HostedCluster object. |
+
+
+Used in:
+* [PackageEnvironmentHyperShift](#packageenvironmenthypershift)
+
+
 ### PackageEnvironmentKubernetes
 
-
+PackageEnvironmentKubernetes configures kubernetes environments.
 
 | Field | Description |
 | ----- | ----------- |
@@ -1378,13 +1452,27 @@ Used in:
 * [PackageEnvironment](#packageenvironment)
 
 
+### PackageEnvironmentManagedOpenShift
+
+PackageEnvironmentManagedOpenShift describes managed OpenShift environments.
+
+| Field | Description |
+| ----- | ----------- |
+| `data` <b>required</b><br><a href="#map[string]string">map[string]string</a> | Data key-value pairs describing details of the Managed OpenShift environment. |
+
+
+Used in:
+* [PackageEnvironmentOpenShift](#packageenvironmentopenshift)
+
+
 ### PackageEnvironmentOpenShift
 
-
+PackageEnvironmentOpenShift configures openshift environments.
 
 | Field | Description |
 | ----- | ----------- |
 | `version` <b>required</b><br>string | OpenShift server version. |
+| `managed` <br><a href="#packageenvironmentmanagedopenshift">PackageEnvironmentManagedOpenShift</a> | ManagedOpenShift environment information. This section is only set when a managed OpenShift cluster is detected.<br>This includes Red Hat OpenShift Dedicated, Red Hat OpenShift Service on AWS (ROSA) and<br>Azure Red Hat OpenShift (ARO) and their Hosted Control Plane variants. |
 
 
 Used in:
@@ -1393,7 +1481,7 @@ Used in:
 
 ### PackageEnvironmentProxy
 
-Environment proxy settings.
+PackageEnvironmentProxy configures proxy environments.
 On OpenShift, this config is taken from the cluster Proxy object.
 https://docs.openshift.com/container-platform/4.13/networking/enable-cluster-wide-proxy.html
 
@@ -1408,9 +1496,38 @@ Used in:
 * [PackageEnvironment](#packageenvironment)
 
 
+### PackageManifestConditionalFiltering
+
+PackageManifestConditionalFiltering is used to conditionally render objects based on CEL expressions.
+
+| Field | Description |
+| ----- | ----------- |
+| `namedConditions` <br><a href="#packagemanifestnamedcondition">[]PackageManifestNamedCondition</a> | Reusable CEL expressions. Can be used in 'package-operator.run/condition' annotations.<br>They are evaluated once per package. |
+| `conditionalPaths` <br><a href="#packagemanifestconditionalpath">[]PackageManifestConditionalPath</a> | Adds CEL conditions to file system paths matching a glob pattern.<br>If a single condition matching a file system object's path evaluates to false,<br>the object is ignored. |
+
+
+Used in:
+* [PackageManifestSpec](#packagemanifestspec)
+
+
+### PackageManifestConditionalPath
+
+PackageManifestConditionalPath is used to conditionally
+render package objects based on their path.
+
+| Field | Description |
+| ----- | ----------- |
+| `glob` <b>required</b><br>string | A file system path glob pattern.<br>Syntax: https://pkg.go.dev/github.com/bmatcuk/doublestar@v1.3.4#Match |
+| `expression` <b>required</b><br>string | A CEL expression with a boolean output type.<br>Has access to the full template context and named conditions. |
+
+
+Used in:
+* [PackageManifestConditionalFiltering](#packagemanifestconditionalfiltering)
+
+
 ### PackageManifestImage
 
-PackageManifestImage specifies an image tag to be resolved
+PackageManifestImage specifies an image tag to be resolved.
 
 | Field | Description |
 | ----- | ----------- |
@@ -1439,7 +1556,7 @@ Used in:
 
 ### PackageManifestLockSpec
 
-
+PackageManifestLockSpec defines a set of packages that are locked to a specific version.
 
 | Field | Description |
 | ----- | ----------- |
@@ -1450,9 +1567,25 @@ Used in:
 * [PackageManifestLock](#packagemanifestlock)
 
 
+### PackageManifestNamedCondition
+
+PackageManifestNamedCondition is a reusable named CEL expression.
+It is injected as a variable into the CEL evaluation environment,
+and its value is set to the result of Expression ("true"/"false").
+
+| Field | Description |
+| ----- | ----------- |
+| `name` <b>required</b><br>string | A unique name. Must match the CEL identifier pattern: [_a-zA-Z][_a-zA-Z0-9]* |
+| `expression` <b>required</b><br>string | A CEL expression with a boolean output type.<br>Has access to the full template context. |
+
+
+Used in:
+* [PackageManifestConditionalFiltering](#packagemanifestconditionalfiltering)
+
+
 ### PackageManifestPhase
 
-
+PackageManifestPhase defines a package phase.
 
 | Field | Description |
 | ----- | ----------- |
@@ -1466,16 +1599,18 @@ Used in:
 
 ### PackageManifestSpec
 
-PackageManifestSpec represents the spec of the packagemanifest containing the details about phases and availability probes.
+PackageManifestSpec represents the spec of the packagemanifest containing the
+details about phases and availability probes.
 
 | Field | Description |
 | ----- | ----------- |
 | `scopes` <b>required</b><br><a href="#packagemanifestscope">[]PackageManifestScope</a> | Scopes declare the available installation scopes for the package.<br>Either Cluster, Namespaced, or both. |
-| `phases` <b>required</b><br><a href="#packagemanifestphase">[]PackageManifestPhase</a> | Phases correspond to the references to the phases which are going to be the part of the ObjectDeployment/ClusterObjectDeployment. |
+| `phases` <b>required</b><br><a href="#packagemanifestphase">[]PackageManifestPhase</a> | Phases correspond to the references to the phases which are going to be the<br>part of the ObjectDeployment/ClusterObjectDeployment. |
 | `availabilityProbes` <br>[]corev1alpha1.ObjectSetProbe | Availability Probes check objects that are part of the package.<br>All probes need to succeed for a package to be considered Available.<br>Failing probes will prevent the reconciliation of objects in later phases. |
 | `config` <br><a href="#packagemanifestspecconfig">PackageManifestSpecConfig</a> | Configuration specification. |
 | `images` <b>required</b><br><a href="#packagemanifestimage">[]PackageManifestImage</a> | List of images to be resolved |
-| `components` <br><a href="#packagemanifestcomponentsconfig">PackageManifestComponentsConfig</a> | Configuration for multi-component packages. If this field is not set it is assumed that the containing package is a single-component package. |
+| `components` <br><a href="#packagemanifestcomponentsconfig">PackageManifestComponentsConfig</a> | Configuration for multi-component packages. If this field is not set it is assumed<br>that the containing package is a single-component package. |
+| `conditionalFiltering` <br><a href="#packagemanifestconditionalfiltering">PackageManifestConditionalFiltering</a> | Used to conditionally render objects based on CEL expressions. |
 
 
 Used in:
@@ -1484,7 +1619,7 @@ Used in:
 
 ### PackageManifestSpecConfig
 
-
+PackageManifestSpecConfig configutes a package manifest.
 
 | Field | Description |
 | ----- | ----------- |
@@ -1502,6 +1637,7 @@ PackageManifestTest configures test cases.
 | Field | Description |
 | ----- | ----------- |
 | `template` <br><a href="#packagemanifesttestcasetemplate">[]PackageManifestTestCaseTemplate</a> | Template testing configuration. |
+| `kubeconform` <br><a href="#packagemanifesttestkubeconform">PackageManifestTestKubeconform</a> | PackageManifestTestKubeconform configures kubeconform testing. |
 
 
 Used in:
@@ -1516,6 +1652,20 @@ PackageManifestTestCaseTemplate template testing configuration.
 | ----- | ----------- |
 | `name` <b>required</b><br>string | Name describing the test case. |
 | `context` <br><a href="#templatecontext">TemplateContext</a> | Template data to use in the test case. |
+
+
+Used in:
+* [PackageManifestTest](#packagemanifesttest)
+
+
+### PackageManifestTestKubeconform
+
+PackageManifestTestKubeconform configures kubeconform testing.
+
+| Field | Description |
+| ----- | ----------- |
+| `kubernetesVersion` <b>required</b><br>string | Kubernetes version to use schemas from. |
+| `schemaLocations` <br>[]string | OpenAPI schema locations for kubeconform<br>defaults to:<br>- https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/{{ .NormalizedKubernetesVersion }}-standalone{{ .StrictSuffix }}/{{ .ResourceKind }}{{ .KindSuffix }}.json<br>- https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json |
 
 
 Used in:
@@ -1550,6 +1700,7 @@ TemplateContextObjectMeta represents a simplified version of metav1.ObjectMeta f
 
 
 Used in:
+* [PackageEnvironmentHyperShiftHostedCluster](#packageenvironmenthypershifthostedcluster)
 * [TemplateContextPackage](#templatecontextpackage)
 
 
@@ -1560,6 +1711,7 @@ TemplateContextPackage represents the (Cluster)Package object requesting this pa
 | Field | Description |
 | ----- | ----------- |
 | `metadata` <b>required</b><br><a href="#templatecontextobjectmeta">TemplateContextObjectMeta</a> | TemplateContextObjectMeta represents a simplified version of metav1.ObjectMeta for use in templates. |
+| `image` <b>required</b><br>string | Image as presented via the (Cluster)Package API after admission. |
 
 
 Used in:
