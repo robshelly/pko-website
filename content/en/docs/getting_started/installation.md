@@ -29,18 +29,6 @@ Kubernetes cluster. From the root of the repository run
 
 This will install the Package Operator Manager and the webhook server.
 
-## Via Manifests
-
-Package Operator has a single yaml file, `install.yaml`, which includes the manifests
-of all resources that make up Package Operator. Therefore, Package Operator can
-be installed with the single command:
-
-```url
-https://raw.githubusercontent.com/package-operator/package-operator/main/install.yaml
-```
-
-This will not install the webhook server.
-
 ## kubectl package plugin
 
 A [kubectl plugin](https://kubernetes.io/docs/tasks/extend-kubectl/kubectl-plugins/)
