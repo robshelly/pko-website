@@ -1,8 +1,8 @@
 ---
-title: Phases
+title: Reconcile Phases
 draft: false
 images: []
-weight: 600
+weight: 450
 toc: true
 mermaid: true
 ---

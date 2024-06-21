@@ -2,7 +2,7 @@
 title: Package Configuration
 draft: false
 images: []
-weight: 500
+weight: 700
 toc: true
 ---
 
@@ -300,7 +300,7 @@ package to your `manifest.yaml`. Allow users define image and port versions.
 Imagine you are an engineer responsible for managing deployments in a
 Kubernetes cluster using the Package Operator. You have a package
 application, and you want to streamline the stage and production
-deployment process by using package configuration and [ClusterObjectTemplates](https://package-operator.run/docs/getting_started/api-reference/#clusterobjecttemplate).
+deployment process by using package configuration and [ClusterObjectTemplates](https://package-operator.run/docs/api_reference/package-operator-api#clusterobjecttemplate).
 
 **Application Configuration**
 

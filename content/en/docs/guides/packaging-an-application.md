@@ -5,7 +5,7 @@ images: []
 ---
 
 In this guide, you will deploy a simple nginx web server, using the Package
-Operator - [Package API](/docs/getting_started/api-reference/#package).
+Operator - [Package API](/docs/api_reference/package-operator-api/#package).
 
 During this guide you will:
 
@@ -31,8 +31,8 @@ _To complete this step, refer to the files in [/1_applications/1_start](https://
 When packaging an application for Package Operator, you will need 2 things:
 
 1. One or more Kubernetes manifests (e.g. `deployment.yaml`)
-2. A [PackageManifest](/docs/getting_started/api-reference/#packagemanifest) object
-   in a `manifest.yaml` file
+2. A [PackageManifest](/docs/api_reference/package-operator-api/#packagemanifest)
+ object in a `manifest.yaml` file
 
 ### Writing a PackageManifest
 
@@ -241,7 +241,7 @@ By renaming `deployment.yaml` to `deployment.yaml.gotmpl`, we can enable
 `.gotmpl` will be processed by the Go template engine before the YAML manifests
 are parsed.
 
-[TemplateContext](/docs/getting_started/api-reference/#templatecontext) is \
+[TemplateContext](/docs/api_reference/package-operator-api/#templatecontext) is \
 documented as part of the API. It always contains information like package \
 metadata that can be used to reduce reduncancies.
 

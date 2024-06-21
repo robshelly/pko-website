@@ -2,7 +2,7 @@
 title: Revisions
 draft: false
 images: []
-weight: 700
+weight: 500
 toc: true
 mermaid: true
 ---

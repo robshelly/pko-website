@@ -2,7 +2,7 @@
 title: Package Format
 draft: false
 images: []
-weight: 800
+weight: 600
 toc: true
 ---
 
@@ -19,6 +19,25 @@ an `ObjectDeployment`.
 {{< alert text=`Large Packages will automatically use the 'ObjectSlice' API to
 get around etcd object-size limitations.<br>More about this feature can be found
 on the \"Big Packages\" page.` />}}
+
+## Package Scopes
+
+The two possible values for `scopes` are `Cluster` and `Namespaced`.
+
+`Cluster` scope allows the package to deploy cluster scoped object, such as CRDs.
+It also allows for deploying namespaced resources in multiple namespaces.
+
+`Namespaced` scope restricts the package to only installing namespaced resources,
+and only into the namespace that the package is in.
+
+Just one or both scopes can be specified for a single package.
+
+The `scopes` given in the Package Manifest file determine which package resource
+can be used to deploy the package. If only `Cluster` or only `Namespaced` is given
+as a scope, then the package must be deployed as a
+[ClusterPackage](/docs/api_reference/package-operator-api/#clusterpackage)
+or [Package](/docs/api_reference/package-operator-api/#package) respectfully.
+If both scopes are given, then the package can be deployed as either resource.
 
 ## Package Structure
 
