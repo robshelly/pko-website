@@ -1,13 +1,13 @@
 ---
-title: Probes
+title: Status Probes
 draft: false
 images: []
-weight: 500
+weight: 400
 toc: true
 ---
 
-Probes define how Package Operator judges the **Availability** of objects and is
-reporting status.
+Status probes define how Package Operator judges the
+**Availability** of objects and is reporting status.
 
 Defining **Availability** will depend on the specific application that is deployed.\
 In general, availability should reflect the health of the complete application bundle,
@@ -23,7 +23,7 @@ authors to tweak probing to their specific requirements.
 Probes typically consist of two parts.\
 A selector specifying what objects to apply a probe to and a list of probes to check.
 
-All available probing declarations can be found in [API Reference - ObjectSetProbe](/docs/getting_started/api-reference/#objectsetprobe).
+All available probing declarations can be found in [API Reference - ObjectSetProbe](/docs/api_reference/package-operator-api#objectsetprobe).
 
 ## Examples
 

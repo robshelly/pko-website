@@ -1,18 +1,18 @@
 ---
-title: Object Templates
+title: Templates from in-cluster Sources
 draft: false
 images: []
-weight: 600
+weight: 1500
 toc: true
 mermaid: true
 ---
 
-[ClusterObjectTemplate](/docs/getting_started/api-reference#clusterobjecttemplate)
-and [ObjectTemplate](/docs/getting_started/api-reference#objecttemplate) are APIs
-defined in Package Operator. These APIs make it possible to create objects by
-templating a manifest and injecting values retrieved from other arbitrary source
-objects. The source objects are then continuously monitored and any change in the
-source values result in an updated templated object.
+[ClusterObjectTemplate](/docs/api_reference/package-operator-api#clusterobjecttemplate)
+and [ObjectTemplate](/docs/api_reference/package-operator-api#objecttemplate)
+are APIs defined in Package Operator. These APIs make it possible to create
+objects by templating a manifest and injecting values retrieved from other
+arbitrary source objects. The source objects are then continuously monitored
+and any change in the source values result in an updated templated object.
 
 A subset of this functionality can be achieved by mounting secrets or
 configmaps, however there are multiple benefits to using the ObjectTemplate

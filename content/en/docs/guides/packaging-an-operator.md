@@ -6,7 +6,7 @@ images: []
 
 This guide extends on [Packaging an Application](/docs/guides/packaging-an-application/),
 with the goal to package and deploy an Kubernetes Operator using the Package
-Operator - [ClusterPackage API](/docs/getting_started/api-reference/#clusterpackage).
+Operator - [ClusterPackage API](/docs/api_reference/package-operator-api/#clusterpackage).
 
 During this guide you will:
 

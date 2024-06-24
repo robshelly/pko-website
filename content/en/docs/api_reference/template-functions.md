@@ -1,5 +1,5 @@
 ---
-title: "Template Reference"
+title: "Template Functions"
 draft: false
 images: []
 weight: 800

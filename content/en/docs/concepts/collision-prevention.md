@@ -40,4 +40,4 @@ objects manifest YAML file.
 
 When using the ObjectDeployment or ObjectSet APIs directly, the collision
 protection setting can be set next to each object:
-[API Reference - ObjectSetObject](/docs/getting_started/api-reference/#objectsetobject)
+[API Reference - ObjectSetObject](/docs/api_reference/package-operator-api#objectsetobject)
