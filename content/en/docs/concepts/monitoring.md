@@ -6,9 +6,11 @@ weight: 750
 ---
 
 Package Operator exports metrics on the `/metrics` endpoint which can be used
-to monitor PKO and packages. In order to monitor PKO monitoring stack including
-[Prometheus](https://prometheus.io/) is required. This example will assume you
-have Prometheus installed.
+to monitor PKO and packages. These are exported by the
+`package-operator-manager` pod. In order to monitor PKO a monitoring
+stack including [Prometheus Operator](
+<https://github.com/prometheus-operator/prometheus-operator>)
+is required. This example will assume you have Prometheus installed.
 
 ## RBAC
 
@@ -56,6 +58,9 @@ subjects:
   namespace: <you-monitoring-stack-namespace>
 
 ```
+
+Prometheus must also be able to reach the `package-operator-manager` pod,
+e.g. no NetworkPolicies blocking traffic.
 
 ## Service and Pod Discovery
 
